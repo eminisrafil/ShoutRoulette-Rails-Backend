@@ -2,6 +2,18 @@ class Room < ActiveRecord::Base
   belongs_to :topic
   attr_accessible :position_1, :position_2, :closed
 
+  def create_or_join(params)
+    selected_room = Room.find_all_by_topic(Topic.find(params[:id])).shuffle
+    if !selected_room
+      selected_room = Room.create({ something: params[:id], })
+    else
+      generate_token
+      position = params[:position] == 'agree' ? :position_2 : :position_1
+      selected_room.update_attribute(position, token)
+    end
+    selected_room
+  end
+
   def generate_session(request)
     # Creating Session object, passing request IP address to determine closest production server
     session_id = OTSDK.createSession(request.remote_ip)
