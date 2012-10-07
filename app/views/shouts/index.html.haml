@@ -1,1 +1,6 @@
-%p hello world
+%ul
+  - @topics.each do |topic|
+    %li= link_to "#{topic.title} - yes", show_room_path(topic.id, 'agree')
+    %li= link_to "#{topic.title} - no", show_room_path(topic.id, 'disagree')
+    %li= link_to "#{topic.title} - observe", show_room_path(topic.id, 'observe')
+    %br

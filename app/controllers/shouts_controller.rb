@@ -1,6 +1,7 @@
 class ShoutsController < ActionController::Base
   
   def index
+    @topics = Topic.all
     # @tags = Tag.find_by_sql("select *, count(id) as tag_count from tags group by tag order by tag_count desc limit 0, 50")
   end
   
@@ -78,65 +79,65 @@ class ShoutsController < ActionController::Base
   end
   
   def show_room
-  @topic = Topic.find(:first, :conditions=>{:text_id => params[:id]}) rescue nil
-  if !params[:p].nil? && !params[:p].blank?
-    case params[:p].to_s
-      when '0'
+    @topic = Topic.find(:first, :conditions=>{:text_id => params[:id]}) rescue nil
+    if !params[:p].nil? && !params[:p].blank?
+      case params[:p].to_s
+        when '0'
+          pos = '0'
+        when '1'
+          pos = '1'
+        when '2'
+          pos = '2'
+      else
         pos = '0'
-      when '1'
-        pos = '1'
-      when '2'
-        pos = '2'
+      end
     else
       pos = '0'
     end
-  else
-    pos = '0'
-  end
-  if pos == '0'
-    
-    @room = Room.find(:first, :conditions=>"topics.text_id = '#{params[:id]}' and rooms.room_closed = '0'", :joins=>"join topics on topics.id = rooms.topic_id", :order=>"rand()") rescue nil
-  else
-    @room = Room.find(:first, :conditions=>"topics.text_id = '#{params[:id]}' and rooms.position_#{pos} is null and rooms.room_closed = '0'", :joins=>"join topics on topics.id = rooms.topic_id", :order=>"rand()")
-  end
-    if (@room.nil? || @room.blank?) && pos != '0'
+    if pos == '0'
       
-      if !@topic.nil? && !@topic.blank?
-        @room = Room.new
-        @room.topic_id = @topic.id
-        @room.session_id = @room.generate_session(request).to_s
-        @room.created_at = Time.now
-        @room.save
-      end
+      @room = Room.find(:first, :conditions=>"topics.text_id = '#{params[:id]}' and rooms.room_closed = '0'", :joins=>"join topics on topics.id = rooms.topic_id", :order=>"rand()") rescue nil
     else
-      @room = Room.find(:first, :conditions=>{:id => @room.id})
+      @room = Room.find(:first, :conditions=>"topics.text_id = '#{params[:id]}' and rooms.position_#{pos} is null and rooms.room_closed = '0'", :joins=>"join topics on topics.id = rooms.topic_id", :order=>"rand()")
     end
-    @room_gen = Room.new
-    ##if room now exists, sit down
-    token = @room_gen.generate_publisher(session)
-    if pos == '1'
-      @room.position_1 = token
-    elsif pos == '2'
-      @room.position_2 = token
+      if (@room.nil? || @room.blank?) && pos != '0'
+        
+        if !@topic.nil? && !@topic.blank?
+          @room = Room.new
+          @room.topic_id = @topic.id
+          @room.session_id = @room.generate_session(request).to_s
+          @room.created_at = Time.now
+          @room.save
+        end
+      else
+        @room = Room.find(:first, :conditions=>{:id => @room.id})
+      end
+      @room_gen = Room.new
+      ##if room now exists, sit down
+      token = @room_gen.generate_publisher(session)
+      if pos == '1'
+        @room.position_1 = token
+      elsif pos == '2'
+        @room.position_2 = token
+      end
+      @room.save
+      @session = UserSession.find(:first, :conditions=>{:session_id => request.session_options[:id]}) rescue nil
+      if @session.nil?
+        @session = UserSession.new
+        @session.session_id = request.session_options[:id].to_s
+        @session.ip_address = request.remote_ip.to_s
+        @session.time_created = Time.now
+      end
+    @session.topic_id = @room.topic_id
+    @session.room_id = @room.id
+    @session.last_checked = Time.now
+    @session.token_id = token
+    if pos == '0'
+      @session.sit_stand = 1
+    else
+      @session.sit_stand = 0
     end
-    @room.save
-    @session = UserSession.find(:first, :conditions=>{:session_id => request.session_options[:id]}) rescue nil
-    if @session.nil?
-      @session = UserSession.new
-      @session.session_id = request.session_options[:id].to_s
-      @session.ip_address = request.remote_ip.to_s
-      @session.time_created = Time.now
-    end
-  @session.topic_id = @room.topic_id
-  @session.room_id = @room.id
-  @session.last_checked = Time.now
-  @session.token_id = token
-  if pos == '0'
-    @session.sit_stand = 1
-  else
-    @session.sit_stand = 0
-  end
-  @session.save
+    @session.save
 
     render :layout => 'blank'
   end

@@ -6,3 +6,11 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+puts '-----------------------------'
+puts 'Creating Topics'
+puts '-----------------------------'
+
+Topic.create({ title: 'test-1' })
+Topic.create({ title: 'test-2' })
+Topic.create({ title: 'test-3' })
+Topic.create({ title: 'test-4' })
