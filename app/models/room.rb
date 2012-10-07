@@ -23,4 +23,12 @@ class Room < ActiveRecord::Base
     return token
   end
 
+  def get_session
+    # write this method
+  end
+
+  def get_token
+    # write this method
+  end
+
 end
