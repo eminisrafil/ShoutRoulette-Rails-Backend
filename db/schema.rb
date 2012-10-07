@@ -32,8 +32,6 @@ ActiveRecord::Schema.define(:version => 20121007212657) do
 
   create_table "topics", :force => true do |t|
     t.string   "title"
-    t.string   "position_1"
-    t.string   "position_2"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
