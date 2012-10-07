@@ -14,23 +14,38 @@
 ActiveRecord::Schema.define(:version => 20121007212657) do
 
   create_table "rooms", :force => true do |t|
+    t.string   "session_id"
+    t.string   "position_1"
+    t.string   "position_2"
+    t.boolean  "closed"
+    t.integer  "topic_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
   create_table "tags", :force => true do |t|
+    t.integer  "room_id"
+    t.string   "tag"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
   create_table "topics", :force => true do |t|
+    t.string   "title"
+    t.string   "position_1"
+    t.string   "position_2"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
   create_table "user_sessions", :force => true do |t|
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "topic_id"
+    t.string   "ip_address"
+    t.boolean  "observing"
+    t.datetime "last_checked"
+    t.string   "token_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
 end

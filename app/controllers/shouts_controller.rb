@@ -1,7 +1,7 @@
 class ShoutsController < ActionController::Base
   
   def index
-    @tags = Tag.find_by_sql("select *, count(id) as tag_count from tags group by tag order by tag_count desc limit 0, 50")
+    # @tags = Tag.find_by_sql("select *, count(id) as tag_count from tags group by tag order by tag_count desc limit 0, 50")
   end
   
   def choose

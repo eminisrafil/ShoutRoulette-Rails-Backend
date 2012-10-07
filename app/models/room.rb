@@ -1,5 +1,7 @@
 class Room < ActiveRecord::Base
-  # attr_accessible :title, :body
+  belongs_to :topic
+  attr_accessible :position_1, :position_2, :closed
+
   def generate_session(request)
     # Creating Session object, passing request IP address to determine closest production server
     session_id = OTSDK.createSession(request.remote_ip)
@@ -12,13 +14,13 @@ class Room < ActiveRecord::Base
   
   
   def generate_publisher(session)
-    # Generating a token
     token = OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::PUBLISHER, :connection_data => "username=Bob,level=4"
     return token
   end
+
   def generate_subscriber(session)
-    # Generating a token
     token = OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::SUBSCRIBER, :connection_data => "username=Bob,level=4"
     return token
   end
+
 end

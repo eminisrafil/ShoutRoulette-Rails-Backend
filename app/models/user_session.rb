@@ -1,3 +1,4 @@
 class UserSession < ActiveRecord::Base
-  # attr_accessible :title, :body
+  belongs_to :topic
+  attr_accessible :ip_address, :observing, :last_checked, :token_id
 end
