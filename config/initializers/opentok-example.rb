@@ -1,0 +1,1 @@
+OTSDK = OpenTok::OpenTokSDK.new 'API_KEY', 'API_SECRET'
