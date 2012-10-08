@@ -8,15 +8,15 @@
 
 %ul#popular-topics
   / start the loop here
-  - 3.times do
+  - @topics.each do |topic|
     %li
       .top
-        %p Do you think Obamacare is the best thing ever?
+        %p= topic.title
         .button shout about it!
       .pulldown
-        %a.yes{ href: 'session.html' } YES!
-        %a.no{ href: 'session.html' } NO!
-        %a.observe{ href: 'session.html' } observe
+        = link_to 'YES!', show_room_path(topic, 'agree'), class: 'yes'
+        = link_to 'NO!', show_room_path(topic, 'disagree'), class: 'no'
+        = link_to 'observe', show_room_path(topic, 'observe'), class: 'observe'
 
 %h2.bottom-heading Create a Topic
 #create-topic
