@@ -1,6 +1,25 @@
-%ul
-  - @topics.each do |topic|
-    %li= link_to "#{topic.title} - yes", show_room_path(topic.id, 'agree')
-    %li= link_to "#{topic.title} - no", show_room_path(topic.id, 'disagree')
-    %li= link_to "#{topic.title} - observe", show_room_path(topic.id, 'observe')
+#banner
+  %img{ src: '/img/banner.jpg'}
+  %h1
+    shout at an idiot,
     %br
+    about a thing
+%h2.bottom-heading Popular
+
+%ul#popular-topics
+  / start the loop here
+  - 3.times do
+    %li
+      .top
+        %p Do you think Obamacare is the best thing ever?
+        .button shout about it!
+      .pulldown
+        %a.yes{ href: 'session.html' } YES!
+        %a.no{ href: 'session.html' } NO!
+        %a.observe{ href: 'session.html' } observe
+
+%h2.bottom-heading Create a Topic
+#create-topic
+  %form{ method: 'POST', action: '/newtopic' }
+    %input{ type: 'text', name: 'topic' }
+    %input{ type: 'submit' }

@@ -80,8 +80,13 @@ GEM
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
     rake (0.9.2.2)
+    rdiscount (1.6.8)
     rdoc (3.12)
       json (~> 1.4)
+    roots-rails (0.0.1.alpha)
+      coffee-script
+      haml
+      rdiscount
     sass (3.2.1)
     sass-rails (3.2.5)
       railties (~> 3.2.0)
@@ -111,5 +116,6 @@ DEPENDENCIES
   mysql2
   opentok
   rails (= 3.2.8)
+  roots-rails
   sass-rails (~> 3.2.3)
   uglifier (>= 1.0.3)
