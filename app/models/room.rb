@@ -18,13 +18,9 @@ class Room < ActiveRecord::Base
   end
 
   def generate_session(request)
-    # Creating Session object, passing request IP address to determine closest production server
     session_id = OTSDK.createSession(request)
-    
-    # Creating Session object with p2p enabled
-    sessionProperties = {OpenTok::SessionPropertyConstants::P2P_PREFERENCE => "enabled"}    # or disabled
-    sessionId = OTSDK.createSession( @location, sessionProperties )
-    return sessionId
+    sessionProperties = { OpenTok::SessionPropertyConstants::P2P_PREFERENCE => "enabled" }
+    sessionId = OTSDK.createSession @location, sessionProperties
   end
   
   
