@@ -9,20 +9,14 @@ class Room < ActiveRecord::Base
 
     if !selected_room
     	session = session().to_s
-      selected_room = topic.rooms.create({ session_id: session })
-      selected_room[position] = generate_publisher(session)
-      selected_room.save!
+      selected_room = topic.rooms.create({ session_id: session, :"#{position}" => generate_publisher(session) })
     else
       selected_room.update_attribute(position, generate_publisher(selected_room.session_id))
     end
 
     selected_room
   end
-
   def observe(params)
-
-
-
   end
 
   def session()
