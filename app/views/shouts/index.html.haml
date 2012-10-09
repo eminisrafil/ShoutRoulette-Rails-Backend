@@ -1,6 +1,25 @@
-%ul
-  - @topics.each do |topic|
-    %li= link_to "#{topic.title} - yes", show_room_path(topic.id, 'agree')
-    %li= link_to "#{topic.title} - no", show_room_path(topic.id, 'disagree')
-    %li= link_to "#{topic.title} - observe", show_room_path(topic.id, 'observe')
+#banner
+  = image_tag 'banner.jpg'
+  %h1
+    shout at an idiot,
     %br
+    about a thing
+%h2.bottom-heading Popular
+
+%ul#popular-topics
+  / start the loop here
+  - @topics.each do |topic|
+    %li
+      .top
+        %p= topic.title
+        .button shout about it!
+      .pulldown
+        = link_to 'YES!', show_room_path(topic, 'agree'), class: 'yes'
+        = link_to 'NO!', show_room_path(topic, 'disagree'), class: 'no'
+        = link_to 'observe', show_room_path(topic, 'observe'), class: 'observe'
+
+%h2.bottom-heading Create a Topic
+#create-topic
+  %form{ method: 'POST', action: '/newtopic' }
+    %input{ type: 'text', name: 'topic' }
+    %input{ type: 'submit' }

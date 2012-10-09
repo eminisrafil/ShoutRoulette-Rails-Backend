@@ -1,1 +1,33 @@
-%p hello room
+#session
+  .center
+    = link_to 'back', root_path, class: 'back'
+    %h1.topic Could obama beat a t-rex in a fight?
+
+    #videos
+      #video1
+      .vs
+      #video2
+
+.social
+  %p
+    That chair can only be so much fun...
+    %br
+    Why not provoke a real person into yelling at you?
+  .like
+    .fb-like{ :'data-send' => "false", :'data-width' => "50", :'data-show-faces' => "false" }
+  .tweet
+    %a{ href: "https://twitter.com/share", class: "twitter-share-button", :'data-lang' => "en", :'data-text' => "I'm looking for someone to yell at me about {topic}: ", :'data-hashtags' => "shoutroulette" } Tweet
+
+%h2.bottom-heading Other Battles
+
+#popular-topics
+  / start the loop here
+  - 3.times do
+    %li
+      .top
+        %p Do you think Obamacare is the best thing ever?
+        .button shout about it!
+      .pulldown
+        .yes YES!
+        .no NO!
+        .observe observe
