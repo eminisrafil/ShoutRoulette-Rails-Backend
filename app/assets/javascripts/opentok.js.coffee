@@ -1,64 +1,66 @@
 $ ->
 
-  # track the page
-  mixpanel.track("User arguing about TOPIC HERE");
+  if $('#session').length
 
-  # ragefaces!
-  $('#video1').css({ background: "url(/assets/rage#{Math.round(Math.random() * 5) + 1}.jpg)" });
+    # track the page
+    mixpanel.track("User arguing about TOPIC HERE");
 
-  # prompt sharing if nobody is there
-  prompt_social = setTimeout (-> $('.social').fadeIn()), 10000
+    # ragefaces!
+    $('#video1').css({ background: "url(/assets/rage#{Math.round(Math.random() * 5) + 1}.jpg)" });
 
-  # close the room if people leave
-  exitFunction = ->
-    console.log 'closing'
-    $.ajax
-      type: 'POST'
-      url: "/close"
-      data: { id: $('.room_id').text(), position: $('.position').text() }
-      async : false
-      success: (data) -> console.log data
+    # prompt sharing if nobody is there
+    prompt_social = setTimeout (-> $('.social').fadeIn()), 10000
 
-  if window.onpagehide || window.onpagehide == null
-    window.addEventListener 'pagehide', exitFunction, false
-  else
-    window.addEventListener 'unload', exitFunction, false
+    # close the room if people leave
+    exitFunction = ->
+      console.log 'closing'
+      $.ajax
+        type: 'POST'
+        url: "/close"
+        data: { id: $('.room_id').text(), position: $('.position').text() }
+        async : false
+        success: (data) -> console.log data
 
-  # config
-  apiKey = 20193772
-  sessionId = $('.session-id').text()
-  token = $('.token').text()
-  position = parseInt($('.position').text().replace(/position_/, "")) - 1
-  VIDEO_WIDTH = 466
-  VIDEO_HEIGHT = 378
+    if window.onpagehide || window.onpagehide == null
+      window.addEventListener 'pagehide', exitFunction, false
+    else
+      window.addEventListener 'unload', exitFunction, false
 
-  console.log position
+    # config
+    apiKey = 20193772
+    sessionId = $('.session-id').text()
+    token = $('.token').text()
+    position = parseInt($('.position').text().replace(/position_/, "")) - 1
+    VIDEO_WIDTH = 466
+    VIDEO_HEIGHT = 378
 
-  sessionConnectedHandler = (event) ->
-    subscribeToStreams(event.streams)
-    $('#video1').append("<div id='#{position}'></div>");
-    publisher = TB.initPublisher apiKey, "#{position}", { width: VIDEO_WIDTH, height: VIDEO_HEIGHT }
-    session.publish publisher
+    console.log position
 
-  streamCreatedHandler = (e) ->
-    subscribeToStreams e.streams
+    sessionConnectedHandler = (event) ->
+      subscribeToStreams(event.streams)
+      $('#video1').append("<div id='#{position}'></div>");
+      publisher = TB.initPublisher apiKey, "#{position}", { width: VIDEO_WIDTH, height: VIDEO_HEIGHT }
+      session.publish publisher
 
-  subscribeToStreams = (streams) ->
+    streamCreatedHandler = (e) ->
+      subscribeToStreams e.streams
 
-    for stream in streams
-      if  stream.connection.connectionId != session.connection.connectionId
-        $('#video2').append "<div id='sub2'></div>"
-        session.subscribe stream, 'sub2', { width: VIDEO_WIDTH, height: VIDEO_HEIGHT }
-        clearTimeout prompt_social
-        $('.social').fadeOut()
+    subscribeToStreams = (streams) ->
 
-  exceptionHandler = (e) ->
-    console.log "This page is trying to connect a third client to an OpenTok peer-to-peer session. Only two clients can connect to peer-to-peer sessions." if e.code == 1013
+      for stream in streams
+        if  stream.connection.connectionId != session.connection.connectionId
+          $('#video2').append "<div id='sub2'></div>"
+          session.subscribe stream, 'sub2', { width: VIDEO_WIDTH, height: VIDEO_HEIGHT }
+          clearTimeout prompt_social
+          $('.social').fadeOut()
 
-  # make the magic happen
+    exceptionHandler = (e) ->
+      console.log "This page is trying to connect a third client to an OpenTok peer-to-peer session. Only two clients can connect to peer-to-peer sessions." if e.code == 1013
 
-  TB.addEventListener "exception", exceptionHandler
-  session = TB.initSession sessionId
-  session.addEventListener "sessionConnected", sessionConnectedHandler
-  session.addEventListener "streamCreated", streamCreatedHandler
-  session.connect apiKey, token    
+    # make the magic happen
+
+    TB.addEventListener "exception", exceptionHandler
+    session = TB.initSession sessionId
+    session.addEventListener "sessionConnected", sessionConnectedHandler
+    session.addEventListener "streamCreated", streamCreatedHandler
+    session.connect apiKey, token    
