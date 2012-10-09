@@ -13,8 +13,11 @@ $ ->
   exitFunction = ->
     console.log 'closing'
     $.ajax
-      url: "/close/ROOM_NUMBER"
+      type: 'POST'
+      url: "/close"
+      data: { id: $('.room_id').text(), position: $('.position').text() }
       async : false
+      success: (data) -> console.log data
 
   if window.onpagehide || window.onpagehide == null
     window.addEventListener 'pagehide', exitFunction, false
@@ -25,14 +28,16 @@ $ ->
   apiKey = 20193772
   sessionId = $('.session-id').text()
   token = $('.token').text()
+  position = parseInt($('.position').text().replace(/position_/, "")) - 1
   VIDEO_WIDTH = 466
   VIDEO_HEIGHT = 378
 
+  console.log position
+
   sessionConnectedHandler = (event) ->
     subscribeToStreams(event.streams)
-    id = '1'
-    $('#video1').append("<div id='#{id}'></div>");
-    publisher = TB.initPublisher apiKey, id, { width: VIDEO_WIDTH, height: VIDEO_HEIGHT }
+    $('#video1').append("<div id='#{position}'></div>");
+    publisher = TB.initPublisher apiKey, "#{position}", { width: VIDEO_WIDTH, height: VIDEO_HEIGHT }
     session.publish publisher
 
   streamCreatedHandler = (e) ->

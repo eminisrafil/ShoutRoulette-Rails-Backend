@@ -6,8 +6,10 @@ class RoomsController < ApplicationController
     @room = Room.create_or_join(@topic, params)
   end
 
-  def close ##recieves room_id and position as params
-  	Room.close(params)
+  def close
+    @room = Room.find(params[:id])
+  	@room.close(params[:position])
+    render text: "room closed"
   end
 
 end
