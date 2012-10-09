@@ -26,7 +26,7 @@ class Room < ActiveRecord::Base
   end
 
   def observe(topic, params)
-    Room.where("position_1 is not null OR position_2 is not null and topic_id = ?", topic.id).shuffle.first rescue nil
+    Room.where("position_1 is not null OR position_2 is not null and topic_id = ? and closed ='0'", topic.id).shuffle.first rescue nil
   end
 
   def self.publisher_token(session)
