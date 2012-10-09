@@ -4,7 +4,7 @@ $ ->
   mixpanel.track("User arguing about TOPIC HERE");
 
   # ragefaces!
-  $('#video1').css({ background: "url(/img/rage#{Math.round(Math.random() * 5) + 1}.jpg)" });
+  $('#video1').css({ background: "url(/assets/rage#{Math.round(Math.random() * 5) + 1}.jpg)" });
 
   # prompt sharing if nobody is there
   prompt_social = setTimeout (-> $('.social').fadeIn()), 10000

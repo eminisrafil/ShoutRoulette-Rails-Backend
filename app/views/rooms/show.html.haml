@@ -18,6 +18,8 @@
   .tweet
     %a{ href: "https://twitter.com/share", class: "twitter-share-button", :'data-lang' => "en", :'data-text' => "I'm looking for someone to yell at me about #{@topic.title}: ", :'data-hashtags' => "shoutroulette" } Tweet
 
-%span.session-id
-%span.token
+#config
+  %span.session-id= @room.session_id
+  %span.token= @room[@position]
+  
 = javascript_include_tag "opentok"
