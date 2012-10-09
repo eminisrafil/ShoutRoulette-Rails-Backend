@@ -16,10 +16,14 @@ class Room < ActiveRecord::Base
     selected_room
   end
 
+  def self.close
+    self.update_attribute(closed, false)
+  end
+
   def observe(topic, params)
     Room.where("position_1 is not null OR position_2 is not null and topic_id = ?", topic.id).shuffle.first rescue nil
   end
-  
+
   def self.publisher_token(session)
     OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::PUBLISHER
   end
