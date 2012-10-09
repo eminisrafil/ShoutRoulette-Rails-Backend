@@ -12,6 +12,7 @@
     %li
       .top
         %p= topic.title
+        %p= 'Debater Count: ' + topic.debater_count.to_s + ' Observer Count: ' + topic.observer_count.to_s
         .button shout about it!
       .pulldown
         = link_to 'YES!', show_room_path(topic, 'agree'), class: 'yes'
@@ -30,6 +31,7 @@
     %li
       .top
         %p= topic.title
+        %p= 'Debater Count: ' + topic.debater_count.to_s + ' Observer Count: ' + topic.observer_count.to_s
         .button shout about it!
       .pulldown
         = link_to 'YES!', show_room_path(topic, 'agree'), class: 'yes'

@@ -15,7 +15,7 @@ class Room < ActiveRecord::Base
         selected_room.update_column(position, publisher_token(session))
       end
     end
-    UserSession.log_user(request, topic, params)
+    UserSession.log_user(request, selected_room, params)
     selected_room
   end
 
