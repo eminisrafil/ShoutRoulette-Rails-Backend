@@ -11,7 +11,7 @@ class UserSession < ActiveRecord::Base
   		sess.update_attributes({topic_id: room.topic_id, room_id: room.id, observing: observe})
   	end
   end
-  def close_sess(request)
+  def self.close_sess(request)
     sess = UserSession.find(:first, :conditions=>{:session_id => request.session_options[:id].to_s})
     sess.delete
   end
