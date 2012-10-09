@@ -1,22 +1,24 @@
 class Room < ActiveRecord::Base
   belongs_to :topic
-  attr_accessible :session_id, :position_1, :position_2, :closed
+  attr_accessible :session_id, :agree, :disagree, :closed
 
   def self.create_or_join(topic, params, request)
+
     if params[:position] == 'observe'
       selected_room = Room.observe(topic)
     else
-      position = params[:position] == 'agree' ? "position_2" : "position_1"
-    	selected_room = Room.where("#{position} is null and topic_id = '#{topic.id}' and (closed = '0' or closed is null)").shuffle.first
+    	selected_room = Room.where("#{params[:position]} is null and topic_id = '#{topic.id}' and (closed = '0' or closed is null)").shuffle.first
       session = !selected_room ? OTSDK.createSession.to_s : selected_room.session_id
       if !selected_room
-        selected_room = topic.rooms.create({ session_id: session, :"#{position}" => publisher_token(session) })
+        selected_room = topic.rooms.create({ session_id: session, :"#{params[:position]}" => publisher_token(session) })
       else
-        selected_room.update_column(position, publisher_token(session))
+        selected_room.update_column(params[:position], publisher_token(session))
       end
     end
+
     UserSession.log_user(request, selected_room, params)
     selected_room
+
   end
 
   def close(position)

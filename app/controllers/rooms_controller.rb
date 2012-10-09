@@ -4,7 +4,7 @@ class RoomsController < ApplicationController
     @topics = Topic.top_popular
     @topic = Topic.find(params[:id])
     @room = Room.create_or_join(@topic, params, request)
-    @position = params[:position] == 'agree' ? "position_2" : "position_1"
+    @position = params[:position]
     if @room.nil?
       redirect_to '/' and return
     end

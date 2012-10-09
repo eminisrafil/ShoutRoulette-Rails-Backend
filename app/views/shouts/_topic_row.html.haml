@@ -9,4 +9,4 @@
   .pulldown
     = link_to 'YES!', show_room_path(topic, 'agree'), class: 'yes'
     = link_to 'NO!', show_room_path(topic, 'disagree'), class: 'no'
-    = link_to 'observe', show_room_path(topic, 'observe'), class: 'observe'
+    = link_to 'observe', show_room_path(topic, 'observe'), class: "observe #{'disabled' if topic.debater_count.to_i.round < 1}"

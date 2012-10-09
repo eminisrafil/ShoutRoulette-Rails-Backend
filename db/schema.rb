@@ -11,12 +11,12 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121009135759) do
+ActiveRecord::Schema.define(:version => 20121009201355) do
 
   create_table "rooms", :force => true do |t|
     t.string   "session_id"
-    t.text     "position_1"
-    t.text     "position_2"
+    t.text     "agree"
+    t.text     "disagree"
     t.boolean  "closed"
     t.integer  "topic_id"
     t.datetime "created_at", :null => false
@@ -39,12 +39,11 @@ ActiveRecord::Schema.define(:version => 20121009135759) do
   create_table "user_sessions", :force => true do |t|
     t.integer  "topic_id"
     t.string   "ip_address"
+    t.string   "session_id"
     t.boolean  "observing"
     t.datetime "last_checked"
-    t.string   "token_id"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
-    t.string   "session_id"
     t.integer  "room_id"
   end
 
