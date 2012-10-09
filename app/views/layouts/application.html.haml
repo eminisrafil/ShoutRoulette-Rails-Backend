@@ -14,9 +14,9 @@
         %li
           = link_to 'about', about_path
         %li
-          %a{ href: 'http://comedyhackday.org/', target: '_blank' } #comedyhackday
+          %a= link_to 'get angry', get_angry_path
         %li
-          %a{ href: 'http://bit.ly/29EDod' } don't click
+          %a{ href: 'http://comedyhackday.org/', target: '_blank' } #comedyhackday
   #main
     = yield
 
