@@ -10,7 +10,7 @@ $ ->
   prompt_social = setTimeout (-> $('.social').fadeIn()), 10000
 
   # close the room if people leave
-  exitFunction = function(){
+  exitFunction = ->
     console.log 'closing'
     $.ajax
       url: "/close/ROOM_NUMBER"
