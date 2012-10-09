@@ -16,8 +16,8 @@ class Room < ActiveRecord::Base
     selected_room
   end
 
-  def self.close
-    self.update_attribute(closed, true)
+  def self.close(params) ##removes user from seat, updates user_session to not in room
+    
   end
 
   def observe(topic, params)
