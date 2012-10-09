@@ -1,0 +1,2 @@
+ENV['API_KEY'] = 'key'
+ENV['API_SECRET'] = 'secret'

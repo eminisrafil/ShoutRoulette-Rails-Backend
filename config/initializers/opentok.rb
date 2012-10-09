@@ -1,0 +1,1 @@
+OTSDK = OpenTok::OpenTokSDK.new ENV['API_KEY'], ENV['API_SECRET']
