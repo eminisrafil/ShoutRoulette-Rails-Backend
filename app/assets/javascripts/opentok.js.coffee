@@ -90,8 +90,8 @@ $ ->
 
           if position == 'observer'
             num = if $('#video1').children().length then 2 else 1
-            $("#video#{num}").append "<div id='s#{stream.id}'></div>"
-            session.subscribe stream, "s#{stream.id}", { width: VIDEO_WIDTH, height: VIDEO_HEIGHT }
+            $("#video#{num}").append "<div id='s#{num}'></div>"
+            session.subscribe stream, "s#{num}", { width: VIDEO_WIDTH, height: VIDEO_HEIGHT }
           else
             $('#video2').append "<div id='sub2'></div>"
             session.subscribe stream, 'sub2', { width: VIDEO_WIDTH, height: VIDEO_HEIGHT }
