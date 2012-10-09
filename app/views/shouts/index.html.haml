@@ -9,18 +9,7 @@
 %ul#popular-topics
   / start the loop here
   - @topics.each do |topic|
-    %li
-      .top
-        %p= topic.title
-        - if topic.debater_count.round > 0
-          %span.debater-count= topic.debater_count.round
-        - if topic.observer_count.round > 0
-          %span.observer-count= topic.observer_count.round
-        .button shout about it!
-      .pulldown
-        = link_to 'YES!', show_room_path(topic, 'agree'), class: 'yes'
-        = link_to 'NO!', show_room_path(topic, 'disagree'), class: 'no'
-        = link_to 'observe', show_room_path(topic, 'observe'), class: 'observe'
+    = render partial: 'topic_row', locals: { topic: topic }
 
 %h2.bottom-heading Create a Topic
 #create-topic
@@ -28,15 +17,8 @@
     = text_field_tag :topic, nil, placeholder: 'There is no god!!'
     = submit_tag
 
+%h2.bottom-heading All Topics
 %ul#all-topics
   / start the loop here
   - @all.each do |topic|
-    %li
-      .top
-        %p= topic.title
-        %p= 'Debater Count: ' + topic.debater_count.to_s + ' Observer Count: ' + topic.observer_count.to_s
-        .button shout about it!
-      .pulldown
-        = link_to 'YES!', show_room_path(topic, 'agree'), class: 'yes'
-        = link_to 'NO!', show_room_path(topic, 'disagree'), class: 'no'
-        = link_to 'observe', show_room_path(topic, 'observe'), class: 'observe'
+    = render partial: 'topic_row', locals: { topic: topic }

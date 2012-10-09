@@ -1,0 +1,12 @@
+%li
+  .top
+    %p= topic.title
+    - if topic.debater_count.round > 0
+      %span.debater-count= topic.debater_count.round
+    - if topic.observer_count.round > 0
+      %span.observer-count= topic.observer_count.round
+    .button shout about it!
+  .pulldown
+    = link_to 'YES!', show_room_path(topic, 'agree'), class: 'yes'
+    = link_to 'NO!', show_room_path(topic, 'disagree'), class: 'no'
+    = link_to 'observe', show_room_path(topic, 'observe'), class: 'observe'
