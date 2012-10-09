@@ -3,4 +3,5 @@ class TopicsController < ApplicationController
 		topic = Topic.new({'title': params[:topic]})
 		render :json => topic 
 	end
+
 end
