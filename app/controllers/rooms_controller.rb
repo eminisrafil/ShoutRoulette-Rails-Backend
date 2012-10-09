@@ -4,6 +4,10 @@ class RoomsController < ApplicationController
     @topic = Topic.find(params[:id])
     @room = Room.create_or_join(@topic, params)
     @position = params[:position] == 'agree' ? "position_2" : "position_1"
+    if @room.nil?
+      redirect_to '/' and return
+    end
+    logger.info request.session_options[:id].to_s
   end
 
   def close
