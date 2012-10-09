@@ -17,11 +17,9 @@ class Room < ActiveRecord::Base
     selected_room
   end
 
-  def self.close(params) ##removes user from seat, updates user_session to not in room
-    room = Room.where("id = ?", params[:id]).first
+  def close(params) # removes user from seat, updates user_session to not in room
     position = params[:position] == 'agree' ? "position_2" : "position_1"
-    room.update_attribute(position, nil)
-    room
+    update_attribute(position, nil)
   end
 
   def observe(topic, params)
