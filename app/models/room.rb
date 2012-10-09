@@ -24,14 +24,12 @@ class Room < ActiveRecord::Base
   end
   
   
-  def generate_token(session, role = 'PUBLISHER') ##role = PUBLISHER or SUBSCRIBER
-    token = OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::PUBLISHER
-    return token
+  def publisher_token(session) ##role = PUBLISHER or SUBSCRIBER
+    return OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::PUBLISHER
   end
 
-  def generate_subscriber(session)
-    token = OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::SUBSCRIBER
-    return token
+  def subscriber_token(session)
+    return OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::SUBSCRIBER
   end
 
 end
