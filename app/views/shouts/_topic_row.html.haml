@@ -2,9 +2,9 @@
   .top
     %p= topic.title
     - if topic.debater_count.round > 0
-      %span.debater-count= topic.debater_count.round
+      %span.debater-count= topic.debater_count.to_i.round
     - if topic.observer_count.round > 0
-      %span.observer-count= topic.observer_count.round
+      %span.observer-count= topic.observer_count.to_i.round
     .button shout about it!
   .pulldown
     = link_to 'YES!', show_room_path(topic, 'agree'), class: 'yes'
