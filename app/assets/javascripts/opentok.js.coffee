@@ -6,10 +6,10 @@ $ ->
     # track the page
     # ----------------------------------
 
-    mixpanel.track("User arguing about TOPIC HERE");
+    mixpanel.track("#{$('.topic').text()}");
 
     # ----------------------------------
-    # ragefaces!
+    # Rage Faces and Loading
     # ----------------------------------
 
     $('#video1').css({ background: "url(/ragefaces/rage#{Math.round(Math.random() * 5) + 1}.jpg)" });
@@ -59,7 +59,10 @@ $ ->
     else
       window.addEventListener 'unload', exitFunction, false
 
-    # config
+    # -----------------------------------
+    # OpenTok Configuration
+    # -----------------------------------
+
     apiKey = 20193772
     sessionId = $('.session-id').text()
     token = $('.token').text()
@@ -69,26 +72,31 @@ $ ->
 
     sessionConnectedHandler = (event) ->
       subscribeToStreams(event.streams)
-
-      # this needs to be in the for statement below when observing--for stream in streams
-      $('#video1').append("<div id='#{position}'></div>")
       $('.spinner').remove()
       
-      # Not visible to observer
-      publisher = TB.initPublisher apiKey, "#{position}", { width: VIDEO_WIDTH, height: VIDEO_HEIGHT }
-      session.publish publisher
+      unless position == 'observer'
+        $('#video1').append("<div id='#{position}'></div>")
+        publisher = TB.initPublisher apiKey, "#{position}", { width: VIDEO_WIDTH, height: VIDEO_HEIGHT }
+        session.publish publisher
 
     streamCreatedHandler = (e) ->
       subscribeToStreams e.streams
 
     subscribeToStreams = (streams) ->
       for stream in streams
-        if  stream.connection.connectionId != session.connection.connectionId
-          $('#video2').append "<div id='sub2'></div>"
 
-          # need to loop through streams here when subscribing, there should only ever be 2, append  1 to each videos
+        # don't subscribe to your own stream
+        unless stream.connection.connectionId != session.connection.connectionId
 
-          session.subscribe stream, 'sub2', { width: VIDEO_WIDTH, height: VIDEO_HEIGHT }
+          if position == 'observer'
+            num = if $('#video1').children().length then 1 else 2
+            $("#video#{num}").append "<div id='s#{stream.id}'></div>"
+            session.subscribe stream, "s#{stream.id}", { width: VIDEO_WIDTH, height: VIDEO_HEIGHT }
+          else
+            $('#video2').append "<div id='sub2'></div>"
+            session.subscribe stream, 'sub2', { width: VIDEO_WIDTH, height: VIDEO_HEIGHT }
+
+          # get rid of the social share since someone else is there
           clearTimeout prompt_social
           $('.social').fadeOut()
 
@@ -99,8 +107,8 @@ $ ->
     # Initialize and connect to session
     # --------------------------------------------
 
-    TB.addEventListener "exception", exceptionHandler
-    session = TB.initSession sessionId
+    TB.addEventListener("exception", exceptionHandler)
+    session = TB.initSession(sessionId)
     session.addEventListener "sessionConnected", sessionConnectedHandler
     session.addEventListener "streamCreated", streamCreatedHandler
     session.connect apiKey, token

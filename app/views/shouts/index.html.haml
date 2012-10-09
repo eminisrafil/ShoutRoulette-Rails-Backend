@@ -22,3 +22,6 @@
   / start the loop here
   - @all.each do |topic|
     = render partial: 'topic_row', locals: { topic: topic }
+
+%script
+  mixpanel.track("home page");
