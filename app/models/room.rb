@@ -8,7 +8,7 @@ class Room < ActiveRecord::Base
   	selected_room = Room.where("? is null", position).shuffle.first
 
     if !selected_room
-    	session = generate_session(params[:ip_address]).to_s
+    	session = session().to_s
       selected_room = topic.rooms.create({ session_id: session })
       selected_room[position] = generate_publisher(session)
       selected_room.save!
@@ -19,24 +19,24 @@ class Room < ActiveRecord::Base
     selected_room
   end
 
-  def generate_session(request)
-    # Creating Session object, passing request IP address to determine closest production server
-    session_id = OTSDK.createSession(request)
-    
-    # Creating Session object with p2p enabled
-    sessionProperties = {OpenTok::SessionPropertyConstants::P2P_PREFERENCE => "enabled"}    # or disabled
-    sessionId = OTSDK.createSession( @location, sessionProperties )
-    return sessionId
+  def observe(params)
+
+
+
+  end
+
+  def session()
+    return OTSDK.createSession()
   end
   
   
-  def generate_publisher(session)
+  def generate_token(session, role = 'PUBLISHER') ##role = PUBLISHER or SUBSCRIBER
     token = OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::PUBLISHER
     return token
   end
 
   def generate_subscriber(session)
-    token = OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::SUBSCRIBER, :connection_data => "username=Bob,level=4"
+    token = OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::SUBSCRIBER
     return token
   end
 
