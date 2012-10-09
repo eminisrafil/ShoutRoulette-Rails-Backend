@@ -2,7 +2,7 @@ class Room < ActiveRecord::Base
   belongs_to :topic
   attr_accessible :session_id, :position_1, :position_2, :closed
 
-  def self.create_or_join(topic, params)
+  def self.create_or_join(topic, params, request)
     if params[:position] == 'observe'
       selected_room = Room.observe(topic)
     else
@@ -12,16 +12,16 @@ class Room < ActiveRecord::Base
       if !selected_room
         selected_room = topic.rooms.create({ session_id: session, :"#{position}" => publisher_token(session) })
       else
-        selected_room.update_attribute(position, publisher_token(session))
+        selected_room.update_column(position, publisher_token(session))
       end
     end
-
+    UserSession.log_user(request, topic, params)
     selected_room
   end
 
   def close(position)
-    update_attribute(position, nil)
-    update_attribute('closed', true) if position_1.nil? and position_2.nil?
+    update_column(position, nil)
+    update_column('closed', true) if position_1.nil? and position_2.nil?
   end
 
   def self.observe(topic)
