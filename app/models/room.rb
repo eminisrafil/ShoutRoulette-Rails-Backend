@@ -16,20 +16,21 @@ class Room < ActiveRecord::Base
 
     selected_room
   end
+
   def observe(params)
+    Room.where("position_1 is not null OR position_2 is not null").shuffle.first rescue nil
   end
 
   def session()
-    return OTSDK.createSession()
+    OTSDK.createSession()
   end
   
-  
-  def publisher_token(session) ##role = PUBLISHER or SUBSCRIBER
-    return OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::PUBLISHER
+  def publisher_token(session)
+    OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::PUBLISHER
   end
 
   def subscriber_token(session)
-    return OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::SUBSCRIBER
+    OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::SUBSCRIBER
   end
 
 end
