@@ -90,7 +90,7 @@ $ ->
         if stream.connection.connectionId != session.connection.connectionId
 
           if position == 'observe'
-            console.log position
+            console.log $('#video1').children().length
             num = if $('#video1').children().length then 2 else 1
             console.log "appending video to #video#{num}"
             $("#video#{num}").append "<div id='s#{num}'></div>"
