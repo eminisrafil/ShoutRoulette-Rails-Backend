@@ -11,3 +11,7 @@ $ ->
 
   num = Math.round(Math.random() * 5) + 1
   $('#video1').css background: "url(/img/rage#{num}.jpg)"
+
+  $('#create-topic').on 'submit', ->
+    $(@).submit() unless $(@).find('#topic').val() == ""
+    false

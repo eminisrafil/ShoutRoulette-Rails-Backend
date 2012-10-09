@@ -4,7 +4,7 @@
     shout at an idiot,
     %br
     about a thing
-    
+
 %h2.bottom-heading Popular
 %ul#popular-topics
   / start the loop here
@@ -13,7 +13,7 @@
 
 %h2.bottom-heading Create a Topic
 #create-topic
-  = form_tag new_topic_path do
+  = form_tag new_topic_path, id: 'create-topic' do
     = text_field_tag :topic, nil, placeholder: 'There is no god!!'
     = submit_tag
 

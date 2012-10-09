@@ -39,14 +39,12 @@ $ ->
     sessionConnectedHandler = (event) ->
       subscribeToStreams(event.streams)
 
-      ---this needs to be in the for statement below when observing--for stream in streams----
+      # this needs to be in the for statement below when observing--for stream in streams
       $('#video1').append("<div id='#{position}'></div>");
-      -------------
       
-      --------Not visible to observer-----
+      # Not visible to observer
       publisher = TB.initPublisher apiKey, "#{position}", { width: VIDEO_WIDTH, height: VIDEO_HEIGHT }
       session.publish publisher
-      -------------------------------------
 
     streamCreatedHandler = (e) ->
       subscribeToStreams e.streams
@@ -57,9 +55,7 @@ $ ->
         if  stream.connection.connectionId != session.connection.connectionId
           $('#video2').append "<div id='sub2'></div>"
 
-          --------------------------
-          need to loop through streams here when subscribing, there should only ever be 2, append  1 to each videos
-          --------------------------
+          # need to loop through streams here when subscribing, there should only ever be 2, append  1 to each videos
 
           session.subscribe stream, 'sub2', { width: VIDEO_WIDTH, height: VIDEO_HEIGHT }
           clearTimeout prompt_social
