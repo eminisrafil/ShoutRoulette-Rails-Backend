@@ -10,9 +10,9 @@ class Room < ActiveRecord::Base
     	selected_room = Room.where("#{params[:position]} is null and topic_id = '#{topic.id}' and (closed = '0' or closed is null)").shuffle.first
       session = !selected_room ? OTSDK.createSession.to_s : selected_room.session_id
       if !selected_room
-        selected_room = topic.rooms.create({ session_id: session, :"#{params[:position]}" => publisher_token(session) })
+        selected_room = topic.rooms.create({ session_id: session, :"#{params[:position]}" => 'full' })
       else
-        selected_room.update_column(params[:position], publisher_token(session))
+        selected_room.update_column(params[:position], 'full')
       end
     end
 
