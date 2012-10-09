@@ -2,17 +2,14 @@ class Room < ActiveRecord::Base
   belongs_to :topic
   attr_accessible :session_id, :position_1, :position_2, :closed
 
-	OTSDK = OpenTok::OpenTokSDK.new '20193772', 'cf90dfef4da7ba913239ee34e3d0a387411cd2e5'
+  def create_or_join(topic, params)
 
-  def create_or_join(params)
-
-    @topic = Topic.find(params[:id])
     position = params[:position] == 'agree' ? "position_2" : "position_1"
-  	selected_room = Room.where("#{position} is null").shuffle.first
+  	selected_room = Room.where("? is null", position).shuffle.first
 
     if !selected_room
     	session = generate_session(params[:ip_address]).to_s
-      selected_room = @topic.rooms.create({ session_id: session })
+      selected_room = topic.rooms.create({ session_id: session })
       selected_room[position] = generate_publisher(session)
       selected_room.save!
     else

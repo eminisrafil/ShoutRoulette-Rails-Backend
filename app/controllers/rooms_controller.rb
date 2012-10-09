@@ -1,9 +1,8 @@
 class RoomsController < ApplicationController
 
   def show
-    @title = Topic.find(params[:id]).title
-    @session = Room.get_session(params)
-    @token = Room.get_token(params)
+    @topic = Topic.find(params[:id])
+    @room = Room.create_or_join(@topic, params)
   end
 
 end
