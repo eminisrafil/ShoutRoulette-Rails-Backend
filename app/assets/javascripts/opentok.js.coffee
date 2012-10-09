@@ -88,6 +88,8 @@ $ ->
         console.log stream
 
         # don't subscribe to your own stream
+        console.log "stream id: #{stream.connection.connectionId}"
+        console.log "session id: #{session.connection.connectionId}"
         unless stream.connection.connectionId != session.connection.connectionId
 
           if position == 'observer'
@@ -96,6 +98,7 @@ $ ->
             $("#video#{num}").append "<div id='s#{num}'></div>"
             session.subscribe stream, "s#{num}", { width: VIDEO_WIDTH, height: VIDEO_HEIGHT }
           else
+            console.log position
             $('#video2').append "<div id='sub2'></div>"
             session.subscribe stream, 'sub2', { width: VIDEO_WIDTH, height: VIDEO_HEIGHT }
 
