@@ -7,7 +7,7 @@ class Room < ActiveRecord::Base
       selected_room = Room.observe(topic)
     else
       position = params[:position] == 'agree' ? "position_2" : "position_1"
-    	selected_room = Room.where("? is null and topic_id = ? and closed = '0'", position, topic.id).shuffle.first
+    	selected_room = Room.where("(? is null or ? = '') and topic_id = ? and closed = '0'", position, topic.id).shuffle.first
       session = !selected_room ? OTSDK.createSession.to_s : selected_room.session_id
       
       if !selected_room
