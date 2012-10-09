@@ -20,6 +20,6 @@
 
 %h2.bottom-heading Create a Topic
 #create-topic
-  %form{ method: 'POST', action: '/newtopic' }
-    %input{ type: 'text', name: 'topic' }
-    %input{ type: 'submit' }
+  = form_tag new_topic_path do
+    = text_field_tag :topic
+    = submit_tag
