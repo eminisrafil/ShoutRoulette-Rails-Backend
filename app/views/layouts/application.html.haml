@@ -6,6 +6,7 @@
   = csrf_meta_tags
 
 %body
+  =javascript_include_tag 'application'
   %header
     %a#logo{ href: '/' }
     %nav
@@ -18,8 +19,6 @@
           %a{ href: 'http://bit.ly/29EDod' } don't click
   #main
     = yield
-
-  =javascript_include_tag 'application'
 
   / opentok
   %script{ src: "http://static.opentok.com/v0.91/js/TB.min.js" }
