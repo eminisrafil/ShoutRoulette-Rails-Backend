@@ -22,7 +22,7 @@ class Room < ActiveRecord::Base
     update_attribute('closed', true) if position_1.nil? and position_2.nil?
   end
 
-  def observe(topic, params)
+  def self.observe(topic)
     Room.where("position_1 is not null OR position_2 is not null and topic_id = ? and closed ='0'", topic.id).shuffle.first rescue nil
   end
 
