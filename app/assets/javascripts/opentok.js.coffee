@@ -90,7 +90,7 @@ $ ->
         # don't subscribe to your own stream
         console.log "stream id: #{stream.connection.connectionId}"
         console.log "session id: #{session.connection.connectionId}"
-        unless stream.connection.connectionId != session.connection.connectionId
+        if stream.connection.connectionId != session.connection.connectionId
 
           if position == 'observer'
             console.log position
