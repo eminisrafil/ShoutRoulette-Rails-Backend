@@ -6,5 +6,5 @@ ShoutrouletteV2::Application.routes.draw do
   get 'bunnies' => "admin#index", as: 'admin'
   delete 'topic/:id/remove' => "admin#remove_topic", as: 'remove_topic'
   post 'close' => "rooms#close"
-
+  post 'newtopic' => "topics#newtopic", as: 'new_topic'
 end
