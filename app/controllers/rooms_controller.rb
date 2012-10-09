@@ -4,9 +4,14 @@ class RoomsController < ApplicationController
     @topics = Topic.top_popular
     @topic = Topic.find(params[:id])
     @room = Room.create_or_join(@topic, params, request)
-    @position = params[:position]
-    if @room.nil?
-      redirect_to '/' and return
+    if params[:position] == 'observe'
+      if @room.nil?
+        redirect_to '/' and return
+      else
+        @token = Room.subscriber_token(@room.session_id)
+      end
+    else
+      @token = Room.publisher_token(@room.session_id)
     end
   end
 
