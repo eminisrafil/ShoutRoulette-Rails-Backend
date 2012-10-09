@@ -20,6 +20,7 @@ class Room < ActiveRecord::Base
   def close(params) # removes user from seat, updates user_session to not in room
     position = params[:position] == 'agree' ? "position_2" : "position_1"
     update_attribute(position, nil)
+    puts "destroy room" if position_1.nil? and position_2.nil? # self.destroy
   end
 
   def observe(topic, params)
