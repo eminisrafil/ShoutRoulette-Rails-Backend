@@ -22,8 +22,8 @@ class Room < ActiveRecord::Base
   end
 
   def close(position)
-    update_column(position, nil)
-    update_column('closed', true) if position_1.nil? and position_2.nil?
+    update_attribute(position, nil)
+    update_attribute('closed', true) if agree.nil? and disagree.nil?
   end
 
   def self.observe(topic)
