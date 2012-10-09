@@ -5,7 +5,7 @@ class Room < ActiveRecord::Base
   def self.create_or_join(topic, params)
 
     position = params[:position] == 'agree' ? "position_2" : "position_1"
-  	selected_room = Room.where("? is null", position).shuffle.first
+  	selected_room = Room.where("? is null and topic_id = ?", position, topic.id).shuffle.first
 
     if !selected_room
       session = create_session
