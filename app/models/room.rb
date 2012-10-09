@@ -19,9 +19,11 @@ class Room < ActiveRecord::Base
 
   def close(params) # removes user from seat, updates user_session to not in room
     position = params[:position] == 'agree' ? "position_2" : "position_1"
-    update_attribute(position, nil)
-    if position_1.nil? and position_2.nil? # self.destroy
-      update_attribute(closed, true)
+    pos_2 = position == "position_1" ? "position_2" : "position_1"
+    if :"#{pos_2}" == nil
+      update_attribute('closed', true)
+    else
+      update_attribute(position, nil)
     end
   end
 
