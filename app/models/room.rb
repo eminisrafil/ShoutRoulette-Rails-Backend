@@ -1,22 +1,26 @@
 class Room < ActiveRecord::Base
   belongs_to :topic
-  attr_accessible :position_1, :position_2, :closed
-
+  attr_accessible :session_id, :position_1, :position_2, :closed
+	API_KEY = '20193772'                # should be a string
+	API_SECRET = 'cf90dfef4da7ba913239ee34e3d0a387411cd2e5' 	           # should be a string
+	OTSDK = OpenTok::OpenTokSDK.new API_KEY, API_SECRET
   def create_or_join(params)
-    selected_room = Room.find_all_by_topic(Topic.find(params[:id])).shuffle
+	position = params[:position] == 'agree' ? "position_2" : "position_1"
+  	selected_room = Room.where("#{position} is null").shuffle.first
     if !selected_room
-      selected_room = Room.create({ something: params[:id], })
+    	session = generate_session(params[:ip_address]).to_s
+      selected_room = Topic.find(params[:id]).rooms.create({ session_id: session })
+      selected_room[position] = generate_publisher(session)
+      selected_room.save!
     else
-      generate_token
-      position = params[:position] == 'agree' ? :position_2 : :position_1
-      selected_room.update_attribute(position, token)
+      selected_room.update_attribute(position, generate_publisher(selected_room.session_id))
     end
-    selected_room
+    return selected_room
   end
 
   def generate_session(request)
     # Creating Session object, passing request IP address to determine closest production server
-    session_id = OTSDK.createSession(request.remote_ip)
+    session_id = OTSDK.createSession(request)
     
     # Creating Session object with p2p enabled
     sessionProperties = {OpenTok::SessionPropertyConstants::P2P_PREFERENCE => "enabled"}    # or disabled
@@ -26,7 +30,7 @@ class Room < ActiveRecord::Base
   
   
   def generate_publisher(session)
-    token = OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::PUBLISHER, :connection_data => "username=Bob,level=4"
+    token = OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::PUBLISHER
     return token
   end
 
