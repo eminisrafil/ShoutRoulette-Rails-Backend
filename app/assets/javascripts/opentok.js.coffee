@@ -89,7 +89,7 @@ $ ->
         unless stream.connection.connectionId != session.connection.connectionId
 
           if position == 'observer'
-            num = if $('#video1').children().length then 1 else 2
+            num = if $('#video1').children().length then 2 else 1
             $("#video#{num}").append "<div id='s#{stream.id}'></div>"
             session.subscribe stream, "s#{stream.id}", { width: VIDEO_WIDTH, height: VIDEO_HEIGHT }
           else
