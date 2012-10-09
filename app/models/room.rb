@@ -17,10 +17,17 @@ class Room < ActiveRecord::Base
     selected_room
   end
 
+  def self.close(params) ##removes user from seat, updates user_session to not in room
+    room = Room.where("id = ?", params[:id]).first
+    position = params[:position] == 'agree' ? "position_2" : "position_1"
+    room.update_attribute(position, nil)
+    room
+  end
+
   def observe(topic, params)
     Room.where("position_1 is not null OR position_2 is not null and topic_id = ?", topic.id).shuffle.first rescue nil
   end
-  
+
   def self.publisher_token(session)
     OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::PUBLISHER
   end
