@@ -6,13 +6,13 @@ class Topic < ActiveRecord::Base
 
   def self.top_popular
   	pop_count = 5
-  	Topic.select('`topics`.*, count(`rooms`.`id`) as `room_count`').joins('left join `rooms` on `rooms`.`topic_id` = `topics`.`id`').group('`topics`.`id`').order('room_count desc').limit(pop_count)
+  	Topic.select('`topics`.*, count(*) as `room_count`').joins('left join `rooms` on `rooms`.`topic_id` = `topics`.`id`').group('`topics`.`id`').order('room_count desc').limit(pop_count)
   end
 
   def self.sort_all(params)
     case params[:sort]
     	when 'popular'
-    		topics = Topic.select('`topics`.*, count(`rooms`.`id`) as `room_count`').joins('left join `rooms` on `rooms`.`topic_id` = `topics`.`id`').group('`topics`.`id`').order('room_count desc')
+    		topics = Topic.select('`topics`.*, count(*) as `room_count`').joins('left join `rooms` on `rooms`.`topic_id` = `topics`.`id`').group('`topics`.`id`').order('room_count desc')
     	when 'debaters'
 
     	when 'observers'
