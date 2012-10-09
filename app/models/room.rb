@@ -25,13 +25,11 @@ class Room < ActiveRecord::Base
   
   
   def generate_publisher(session)
-    token = OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::PUBLISHER
-    return token
+    OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::PUBLISHER
   end
 
   def generate_subscriber(session)
-    token = OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::SUBSCRIBER, :connection_data => "username=Bob,level=4"
-    return token
+    OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::SUBSCRIBER, :connection_data => "username=Bob,level=4"
   end
 
 end
