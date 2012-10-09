@@ -19,11 +19,11 @@ class Room < ActiveRecord::Base
 
   def close(position) # removes user from seat, updates user_session to not in room
     update_attribute(position, nil)
-    puts "destroy room" if position_1.nil? and position_2.nil? # self.destroy
+    update_attribute('closed', true) if position_1.nil? and position_2.nil?
   end
 
   def observe(topic, params)
-    Room.where("position_1 is not null OR position_2 is not null and topic_id = ?", topic.id).shuffle.first rescue nil
+    Room.where("position_1 is not null OR position_2 is not null and topic_id = ? and closed ='0'", topic.id).shuffle.first rescue nil
   end
 
   def self.publisher_token(session)
