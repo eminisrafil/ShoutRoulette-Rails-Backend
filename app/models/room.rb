@@ -9,7 +9,7 @@ class Room < ActiveRecord::Base
 
     if !selected_room
       session = OTSDK.createSession.to_s
-      selected_room = topic.rooms.create({ session_id: session, :"#{position}" => generate_publisher(session) })
+      selected_room = topic.rooms.create({ session_id: session, :"#{position}" => publisher_token(session) })
     else
       selected_room.update_attribute(position, publisher_token(selected_room.session_id))
     end
