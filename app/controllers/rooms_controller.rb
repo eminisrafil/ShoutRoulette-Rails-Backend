@@ -12,6 +12,7 @@ class RoomsController < ApplicationController
   def close
     @room = Room.find(params[:id])
   	@room.close(params[:position])
+    UserSession.close_sess(request)
     render text: "room closed"
   end
 
