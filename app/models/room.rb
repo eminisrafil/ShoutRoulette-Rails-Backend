@@ -3,15 +3,18 @@ class Room < ActiveRecord::Base
   attr_accessible :session_id, :position_1, :position_2, :closed
 
   def self.create_or_join(topic, params)
-
-    position = params[:position] == 'agree' ? "position_2" : "position_1"
-  	selected_room = Room.where("? is null and topic_id = ? and closed = '0'", position, topic.id).shuffle.first
-    session = !selected_room ? OTSDK.createSession.to_s : selected_room.session_id
-    
-    if !selected_room
-      selected_room = topic.rooms.create({ session_id: session, :"#{position}" => publisher_token(session) })
+    if params[:position] == 'observe'
+      selected_room = Room.observe(topic)
     else
-      selected_room.update_attribute(position, publisher_token(session))
+      position = params[:position] == 'agree' ? "position_2" : "position_1"
+    	selected_room = Room.where("? is null and topic_id = ? and closed = '0'", position, topic.id).shuffle.first
+      session = !selected_room ? OTSDK.createSession.to_s : selected_room.session_id
+      
+      if !selected_room
+        selected_room = topic.rooms.create({ session_id: session, :"#{position}" => publisher_token(session) })
+      else
+        selected_room.update_attribute(position, publisher_token(session))
+      end
     end
 
     selected_room
@@ -22,7 +25,7 @@ class Room < ActiveRecord::Base
     update_attribute('closed', true) if position_1.nil? and position_2.nil?
   end
 
-  def observe(topic, params)
+  def self.observe(topic)
     Room.where("position_1 is not null OR position_2 is not null and topic_id = ? and closed ='0'", topic.id).shuffle.first rescue nil
   end
 
