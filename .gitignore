@@ -11,4 +11,4 @@
 .DS_Store
 .powder
 config/database.yml
-config/initializers/opentok.rb
+config/initializers/opentok-keys.rb

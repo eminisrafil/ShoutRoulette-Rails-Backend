@@ -17,7 +17,7 @@ class Room < ActiveRecord::Base
     selected_room
   end
 
-  def close(position) # removes user from seat, updates user_session to not in room
+  def close(position)
     update_attribute(position, nil)
     update_attribute('closed', true) if position_1.nil? and position_2.nil?
   end
