@@ -17,7 +17,7 @@ class Room < ActiveRecord::Base
   end
 
   def self.close
-    self.update_attribute(closed, false)
+    self.update_attribute(closed, true)
   end
 
   def observe(topic, params)
