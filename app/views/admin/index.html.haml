@@ -6,5 +6,4 @@
     - @topics.each do |topic|
       %li
         = topic.title
-        = # link_to 'edit', '#'
         = link_to 'remove', remove_topic_path(topic), method: 'delete', confirm: 'you sure?'
