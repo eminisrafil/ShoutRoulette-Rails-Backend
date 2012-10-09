@@ -1,9 +1,9 @@
 %li
   .top
     %p= topic.title
-    - if topic.debater_count.round > 0
+    - if topic.debater_count.to_i.round > 0
       %span.debater-count= topic.debater_count.to_i.round
-    - if topic.observer_count.round > 0
+    - if topic.observer_count.to_i.round > 0
       %span.observer-count= topic.observer_count.to_i.round
     .button shout about it!
   .pulldown
