@@ -6,12 +6,11 @@ class Room < ActiveRecord::Base
 
     position = params[:position] == 'agree' ? "position_2" : "position_1"
   	selected_room = Room.where("? is null and topic_id = ?", position, topic.id).shuffle.first
-
+    session = !selected_room ? OTSDK.createSession.to_s : selected_room.session_id
     if !selected_room
-      session = OTSDK.createSession.to_s
       selected_room = topic.rooms.create({ session_id: session, :"#{position}" => publisher_token(session) })
     else
-      selected_room.update_attribute(position, publisher_token(selected_room.session_id))
+      selected_room.update_attribute(position, publisher_token(session))
     end
 
     selected_room
