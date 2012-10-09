@@ -75,6 +75,7 @@ $ ->
       $('.spinner').remove()
       
       unless position == 'observer'
+        console.log 'not an observer'
         $('#video1').append("<div id='#{position}'></div>")
         publisher = TB.initPublisher apiKey, "#{position}", { width: VIDEO_WIDTH, height: VIDEO_HEIGHT }
         session.publish publisher
@@ -85,16 +86,13 @@ $ ->
     subscribeToStreams = (streams) ->
       for stream in streams
 
-        console.log stream
-
         # don't subscribe to your own stream
-        console.log "stream id: #{stream.connection.connectionId}"
-        console.log "session id: #{session.connection.connectionId}"
         if stream.connection.connectionId != session.connection.connectionId
 
           if position == 'observer'
             console.log position
             num = if $('#video1').children().length then 2 else 1
+            console.log "appending video to #video#{num}"
             $("#video#{num}").append "<div id='s#{num}'></div>"
             session.subscribe stream, "s#{num}", { width: VIDEO_WIDTH, height: VIDEO_HEIGHT }
           else
