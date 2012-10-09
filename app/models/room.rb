@@ -8,7 +8,7 @@ class Room < ActiveRecord::Base
   	selected_room = Room.where("? is null and topic_id = ?", position, topic.id).shuffle.first
 
     if !selected_room
-      session = create_session
+      session = OTSDK.createSession.to_s
       selected_room = topic.rooms.create({ session_id: session, :"#{position}" => generate_publisher(session) })
     else
       selected_room.update_attribute(position, generate_publisher(selected_room.session_id))
@@ -19,10 +19,6 @@ class Room < ActiveRecord::Base
 
   def observe(params)
     Room.where("position_1 is not null OR position_2 is not null").shuffle.first rescue nil
-  end
-
-  def self.create_session
-    OTSDK.createSession.to_s
   end
   
   def self.publisher_token(session)
