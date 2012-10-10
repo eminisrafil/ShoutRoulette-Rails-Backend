@@ -27,9 +27,8 @@ class Room < ActiveRecord::Base
   end
 
   def self.observe(topic)
-    r = Room.where("agree is not null and disagree is not null and topic_id = ? and closed ='0'", topic.id).shuffle.first rescue nil
-    r = Room.where("agree is not null OR disagree is not null and topic_id = ? and closed ='0'", topic.id).shuffle.first rescue nil unless !r.nil?
-    r
+    room = Room.where("agree != null and disagree != null and topic_id = ?", topic.id).shuffle.first
+    room = Room.where("agree != null or disagree != null and topic_id = ?", topic.id).shuffle.first if room.nil?
   end
 
   def self.publisher_token(session)
