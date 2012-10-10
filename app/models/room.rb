@@ -5,7 +5,7 @@ class Room < ActiveRecord::Base
   def self.create_or_join(topic, params, request)
 
     if params[:position] == 'observe'
-      selected_room = Room.observe(topic)
+      selected_room = Room.find_observable_room(topic)
     else
     	selected_room = Room.where("#{params[:position]} is null and topic_id = '#{topic.id}' and (closed = '0' or closed is null)").shuffle.first
       session = !selected_room ? OTSDK.createSession.to_s : selected_room.session_id
@@ -26,7 +26,7 @@ class Room < ActiveRecord::Base
     update_attribute('closed', true) if agree.nil? and disagree.nil?
   end
 
-  def self.observe(topic)
+  def self.find_observable_room(topic)
     room = Room.where("agree != null and disagree != null and topic_id = ?", topic.id).shuffle.first
     room = Room.where("agree != null or disagree != null and topic_id = ?", topic.id).shuffle.first if room.nil?
   end
