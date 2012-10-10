@@ -1,5 +1,4 @@
 class Topic < ActiveRecord::Base
-  has_many :tags
   has_many :rooms
   has_many :user_sessions
   attr_accessible :title
@@ -19,14 +18,26 @@ class Topic < ActiveRecord::Base
 
     	when 'observers'
 
-    else ##default most recent
+    else # default most recent
 
     end
     topics = Topic.find_by_sql("SELECT topics.id, topics.title, sum(case when user_sessions.observing = '1' then 1 else 0 end) as observer_count, sum(case when user_sessions.observing = '0' then 1 else 0 end) as debater_count, count(rooms.id) as room_count FROM topics left join rooms on rooms.topic_id = topics.id left join user_sessions on (user_sessions.topic_id = topics.id and user_sessions.room_id = rooms.id) GROUP BY topics.id, topics.title ORDER BY topics.id desc")
   end
 
-  def self.page(params)
+  def debaters
+    agree_debaters + disagree_debaters
+  end
 
+  def agree_debaters
+    rooms.collect {|r| r.agree}.compact.count
+  end
+
+  def disagree_debaters
+    rooms.collect {|r| r.disagree}.compact.count
+  end
+
+  def observers
+    rooms.inject(0) {|i,r| i += r.observers.count }
   end
 
 end
