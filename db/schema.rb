@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121010184751) do
+ActiveRecord::Schema.define(:version => 20121010204906) do
 
   create_table "observers", :force => true do |t|
     t.integer  "room_id"
@@ -21,17 +21,9 @@ ActiveRecord::Schema.define(:version => 20121010184751) do
 
   create_table "rooms", :force => true do |t|
     t.string   "session_id"
-    t.text     "agree"
-    t.text     "disagree"
-    t.boolean  "closed"
+    t.boolean  "agree"
+    t.boolean  "disagree"
     t.integer  "topic_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  create_table "tags", :force => true do |t|
-    t.integer  "room_id"
-    t.string   "tag"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -40,17 +32,6 @@ ActiveRecord::Schema.define(:version => 20121010184751) do
     t.string   "title"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-  end
-
-  create_table "user_sessions", :force => true do |t|
-    t.integer  "topic_id"
-    t.string   "ip_address"
-    t.string   "session_id"
-    t.boolean  "observing"
-    t.datetime "last_checked"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-    t.integer  "room_id"
   end
 
 end

@@ -1,5 +1,6 @@
 class Room < ActiveRecord::Base
   belongs_to :topic
+  has_many :observers
   attr_accessible :session_id, :agree, :disagree, :closed
 
   def self.create_or_join(topic, params, request)
@@ -7,19 +8,34 @@ class Room < ActiveRecord::Base
     if params[:position] == 'observe'
       selected_room = Room.find_observable_room(topic)
     else
-      throw 'dont hack me bro' unless params[:position] == 'agree' or params[:position] == 'disagree' 
+      # find a room with an open seat for your position
+      throw 'dont hack me bro' unless params[:position ] == 'agree' or params[:position] == 'disagree' 
     	selected_room = Room.where("#{params[:position]} = null and topic_id = '#{topic.id}'").shuffle.first
-      session = !selected_room ? OTSDK.createSession.to_s : selected_room.session_id
+
+      # if there isn't one, create one. if there is, fill the position
       if !selected_room
-        selected_room = topic.rooms.create({ session_id: session, :"#{params[:position]}" => 'full' })
+        selected_room = topic.rooms.create({ session_id: OTSDK.createSession.to_s, :"#{params[:position]}" => true })
       else
-        selected_room.update_column(params[:position], 'full')
+        selected_room.update_attribute params[:position], true
       end
     end
 
-    UserSession.log_user(request, selected_room, params)
+    # return the room
     selected_room
 
+  end
+
+  def close(position, observer_id)
+    if position == 'observe'
+      Observer.find(observer_id).destroy
+    else
+      update_attribute position, nil
+    end
+    self.destroy if agree.nil? and disagree.nil?
+  end
+
+  def add_observer
+    observers.create
   end
 
   def self.find_observable_room(topic)
@@ -33,11 +49,6 @@ class Room < ActiveRecord::Base
 
   def self.subscriber_token(session)
     OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::SUBSCRIBER
-  end
-
-  def close(position)
-    update_attribute(position, nil) unless position == 'observe'
-    update_attribute('closed', true) if agree.nil? and disagree.nil?
   end
 
 end
