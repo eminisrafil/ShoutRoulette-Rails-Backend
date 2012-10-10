@@ -6,7 +6,7 @@ class UserSession < ActiveRecord::Base
   	observe = params[:position] == 'observe' ? true : false
   	sess = UserSession.find(:first, :conditions=>{:session_id => request.session_options[:id].to_s})
   	if !sess
-  		UserSession.create({topic_id: room.topic_id, room_id: room.id, session_id: request.session_options[:id].to_s, observing: observe})
+  		UserSession.create({topic_id: room.topic_id, room_id: room.id, ip_address: request.remote_ip.to_s, session_id: request.session_options[:id].to_s, observing: observe})
   	else
   		sess.update_attributes({topic_id: room.topic_id, room_id: room.id, observing: observe})
   	end
