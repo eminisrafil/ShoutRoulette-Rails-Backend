@@ -21,11 +21,11 @@ ActiveRecord::Schema.define(:version => 20121010204906) do
 
   create_table "rooms", :force => true do |t|
     t.string   "session_id"
-    t.boolean  "agree"
-    t.boolean  "disagree"
     t.integer  "topic_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.boolean  "agree"
+    t.boolean  "disagree"
   end
 
   create_table "topics", :force => true do |t|
