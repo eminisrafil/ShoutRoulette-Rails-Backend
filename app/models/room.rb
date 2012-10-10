@@ -1,5 +1,6 @@
 class Room < ActiveRecord::Base
   belongs_to :topic
+  has_many :observers
   attr_accessible :session_id, :agree, :disagree, :closed
 
   def self.create_or_join(topic, params, request)
@@ -21,9 +22,17 @@ class Room < ActiveRecord::Base
 
   end
 
-  def close(position)
-    update_attribute(position, nil) unless position == 'observe'
+  def close(position, observer_id)
+    if position == 'observe'
+      Observer.find(observer_id).destroy
+    else
+      update_attribute position, nil
+    end
     update_attribute('closed', true) if agree.nil? and disagree.nil?
+  end
+
+  def add_observer
+    observers.create
   end
 
   def self.observe(topic)

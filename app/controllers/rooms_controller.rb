@@ -8,6 +8,7 @@ class RoomsController < ApplicationController
     if params[:position] == 'observe'
       redirect_to '/' and return if @room.nil?
       @token = Room.subscriber_token(@room.session_id)
+      @observer = @room.add_observer
     else
       @token = Room.publisher_token(@room.session_id)
     end
@@ -15,7 +16,7 @@ class RoomsController < ApplicationController
 
   def close
     @room = Room.find(params[:id])
-  	@room.close(params[:position])
+  	@room.close(params[:position], params[:observer_id])
     UserSession.close_sess(request)
     render text: "room closed"
   end

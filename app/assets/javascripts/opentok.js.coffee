@@ -50,7 +50,7 @@ $ ->
       $.ajax
         type: 'POST'
         url: "/close"
-        data: { id: $('.room_id').text(), position: $('.position').text() }
+        data: { id: $('.room_id').text(), position: $('.position').text(), observer_id: $('.observer_id').text() }
         async : false
         success: (data) -> console.log data
 
