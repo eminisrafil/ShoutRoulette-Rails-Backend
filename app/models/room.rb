@@ -1,6 +1,5 @@
 class Room < ActiveRecord::Base
   belongs_to :topic
-  has_many :observers
   attr_accessible :session_id, :agree, :disagree, :closed
 
   def self.create_or_join(topic, params, request)
@@ -22,21 +21,15 @@ class Room < ActiveRecord::Base
 
   end
 
-  def close(position, observer_id)
-    if position == 'observe'
-      Observer.find(observer_id).destroy
-    else
-      update_attribute position, nil
-    end
-    self.destroy if agree.nil? and disagree.nil?
-  end
-
-  def add_observer
-    observers.create
+  def close(position)
+    update_attribute(position, nil) unless position == 'observe'
+    update_attribute('closed', true) if agree.nil? and disagree.nil?
   end
 
   def self.observe(topic)
-    Room.where("agree is not null OR disagree is not null and topic_id = ? and closed ='0'", topic.id).shuffle.first rescue nil
+    r = Room.where("agree is not null and disagree is not null and topic_id = ? and closed ='0'", topic.id).shuffle.first rescue nil
+    r = Room.where("agree is not null OR disagree is not null and topic_id = ? and closed ='0'", topic.id).shuffle.first rescue nil unless !r.nil?
+    r
   end
 
   def self.publisher_token(session)
