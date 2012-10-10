@@ -16,7 +16,7 @@
   .like
     .fb-like{ :'data-send' => "false", :'data-width' => "50", :'data-show-faces' => "false" }
   .tweet
-    %a{ href: "https://twitter.com/share", class: "twitter-share-button", :'data-lang' => "en", :'data-text' => "I'm looking for someone to yell at me about #{@topic.title}: ", :'data-hashtags' => "shoutroulette" } Tweet
+    %a{ href: "https://twitter.com/share", class: "twitter-share-button", :'data-lang' => "en", :'data-text' => "I think #{@topic.title.downcase}. If you don't you're an idiot, and you should come yell at me about it. ", :'data-hashtags' => "shoutroulette" } Tweet
 
 %h2.bottom-heading Popular
 %ul#popular-topics
