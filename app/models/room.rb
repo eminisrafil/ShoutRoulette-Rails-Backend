@@ -28,7 +28,7 @@ class Room < ActiveRecord::Base
     else
       update_attribute position, nil
     end
-    update_attribute('closed', true) if agree.nil? and disagree.nil?
+    self.destroy if agree.nil? and disagree.nil?
   end
 
   def add_observer
