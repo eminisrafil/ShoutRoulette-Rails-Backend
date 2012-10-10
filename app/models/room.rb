@@ -10,7 +10,7 @@ class Room < ActiveRecord::Base
     else
       # find a room with an open seat for your position
       throw 'dont hack me bro' unless params[:position ] == 'agree' or params[:position] == 'disagree' 
-    	selected_room = Room.where("#{params[:position]} = null and topic_id = '#{topic.id}'").shuffle.first
+    	selected_room = Room.where("#{params[:position]} is null and topic_id = '#{topic.id}'").shuffle.first
 
       # if there isn't one, create one. if there is, fill the position
       if !selected_room
@@ -39,8 +39,9 @@ class Room < ActiveRecord::Base
   end
 
   def self.find_observable_room(topic)
-    room = Room.where("agree != null and disagree != null and topic_id = ?", topic.id).shuffle.first
-    room = Room.where("agree != null or disagree != null and topic_id = ?", topic.id).shuffle.first if room.nil?
+    room = Room.where("agree is not null and disagree is not null and topic_id = ?", topic.id).shuffle.first
+    return room unless room.nil?
+    Room.where("agree is not null or disagree is not null and topic_id = ?", topic.id).shuffle.first
   end
 
   def self.publisher_token(session)
