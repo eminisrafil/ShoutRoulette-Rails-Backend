@@ -2,7 +2,7 @@ class AdminController < ApplicationController
   http_basic_authenticate_with :name => "hello", :password => "world"
 
   def index
-    @topics = Topic.all  
+    @topics = Topic.all.reverse 
   end
 
   def remove_topic
