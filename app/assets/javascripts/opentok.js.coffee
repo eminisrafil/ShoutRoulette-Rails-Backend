@@ -69,6 +69,11 @@ $ ->
     VIDEO_WIDTH = 466
     VIDEO_HEIGHT = 378
 
+    idle_timer = setTimeout ->
+      $('#flash').append "<div class='flash notice'>You've been sitting around for too long doing nothing. Come back when you're ready to chat!</div>"
+      setTimeout (-> window.location.href = 'http://shoutroulette.com'), 2000
+    , 90000
+
     sessionConnectedHandler = (event) ->
       subscribeToStreams(event.streams)
       $('.spinner').remove()
@@ -79,13 +84,13 @@ $ ->
         session.publish publisher
 
     streamCreatedHandler = (e) ->
+      clearTimeout idle_timer
+      console.log 'clicked accept'
       subscribeToStreams e.streams
 
     appended_one = false
 
     subscribeToStreams = (streams) ->
-      console.log 'new person!'
-      console.log streams
       for stream in streams
 
         # don't subscribe to your own stream
