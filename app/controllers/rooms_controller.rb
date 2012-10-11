@@ -1,6 +1,17 @@
 class RoomsController < ApplicationController
 
   def show
+
+    session['shouting'] ||= 0
+
+    if session['shouting'] > 0 and params[:position] != 'observe'
+      redirect_to root_path, notice: "don't spread yourself too thin! one shout at a time" and return
+    else
+      if params[:position] != 'observe'
+        session['shouting'] += 1
+      end
+    end
+
     @topics = Topic.top_popular
     @topic = Topic.find(params[:id])
     @room = Room.create_or_join(@topic, params, request)
@@ -18,6 +29,9 @@ class RoomsController < ApplicationController
 
   def close
   	Room.find(params[:id]).close params[:position], params[:observer_id]
+    if params[:position] != 'observe'
+      session['shouting'] -= 1
+    end
     render text: "room closed"
   end
 

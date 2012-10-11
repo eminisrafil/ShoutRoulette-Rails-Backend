@@ -11,6 +11,11 @@
 
 %body
   =javascript_include_tag 'application'
+
+  #flash
+    - flash.each do |k,v|
+      .flash{ :class => "#{k}"}= v
+
   %header
     %a#logo{ href: '/' }
     %nav
