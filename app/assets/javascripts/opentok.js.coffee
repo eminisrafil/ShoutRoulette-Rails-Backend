@@ -45,18 +45,13 @@ $ ->
     # close the room if people leave
     # ----------------------------------
 
-    exitFunction = ->
+    window.onunload = ->
       $.ajax
         type: 'POST'
         url: "/close"
         data: { id: $('.room_id').text(), position: $('.position').text(), observer_id: $('.observer_id').text() }
         async : false
         success: (data) -> console.log data
-
-    if window.onpagehide || window.onpagehide == null
-      window.addEventListener 'pagehide', exitFunction, false
-    else
-      window.addEventListener 'unload', exitFunction, false
 
     # -----------------------------------
     # OpenTok Configuration
