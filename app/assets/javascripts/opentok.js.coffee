@@ -45,13 +45,27 @@ $ ->
     # close the room if people leave
     # ----------------------------------
 
-    window.onunload = ->
+    fixUnload = ->
+      if document.readyState == 'interactive'
+        
+        stop = ->
+          document.detachEvent('onstop', stop)
+          unload()
+
+        document.attachEvent('onstop', stop) 
+        window.setTimeout (-> document.detachEvent('onstop', stop)), 0
+      
+    unload = ->
       $.ajax
         type: 'POST'
         url: "/close"
         data: { id: $('.room_id').text(), position: $('.position').text(), observer_id: $('.observer_id').text() }
         async : false
         success: (data) -> console.log data
+      
+    window.attachEvent('onunload', unload)
+    window.attachEvent('onbeforeunload', fixUnload)
+    window.onunload = -> unload()
 
     # -----------------------------------
     # OpenTok Configuration
