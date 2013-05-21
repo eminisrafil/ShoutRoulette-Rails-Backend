@@ -44,8 +44,8 @@ $ ->
     # ----------------------------------
     # close the room if people leave
     # ----------------------------------
+
     
-    ###
     fixUnload = ->
       if document.readyState == 'interactive'
         
@@ -53,7 +53,7 @@ $ ->
           document.detachEvent('onstop', stop)
           unload()
 
-        document.attachEvent('onstop', stop) 
+        document.addEventListener('onstop', stop) 
         window.setTimeout (-> document.detachEvent('onstop', stop)), 0
       
     unload = ->
@@ -64,10 +64,10 @@ $ ->
         async : false
         success: (data) -> console.log data
       
-    window.attachEvent('onunload', unload)
-    window.attachEvent('onbeforeunload', fixUnload)
+    window.addEventListener('onunload', unload)
+    window.addEventListener('onbeforeunload', fixUnload)
     window.onunload = -> unload()
-    ###
+    
 
     # -----------------------------------
     # OpenTok Configuration
@@ -105,7 +105,7 @@ $ ->
     subscribeToStreams = (streams) ->
       for stream in streams
 
-        # don't subscribe to your own stream
+        # dont subscribe to your own stream
         if stream.connection.connectionId != session.connection.connectionId
 
           if position == 'observe'
