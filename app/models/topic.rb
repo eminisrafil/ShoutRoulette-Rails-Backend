@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: topics
+#
+#  id         :integer          not null, primary key
+#  title      :string(255)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 class Topic < ActiveRecord::Base
   has_many :rooms
   attr_accessible :title
@@ -10,9 +20,16 @@ class Topic < ActiveRecord::Base
     Topic.all.each do |topic|
       total = topic.debaters + topic.observers
       poptop << [topic, total]
+     #puts "poptop:           #{poptop} \n\n\n"
+     #puts "poptop to_json:   #{poptop.to_json}\n\n\n"
     end
+    #sort
     poptop.sort! { |a,b| a[1] <=> b[1] }
-    poptop.collect { |a| a[0] }.reverse[0..5]
+    
+    #return only top 3 topics, strip out total values
+    poptop.collect { |a| a[0] }.reverse[0..3]
+     #puts "END => poptop:           #{poptop} \n\n\n"
+     #puts "END => poptop to_json:   #{poptop.to_json}\n\n\n"
 
   	# Topic.find_by_sql("SELECT topics.id, topics.title, sum(case when user_sessions.observing = '1' then 1 else 0 end) as observer_count, sum(case when user_sessions.observing = '0' then 1 else 0 end) as debater_count, count(rooms.id) as room_count FROM topics left join rooms on rooms.topic_id = topics.id left join user_sessions on (user_sessions.topic_id = topics.id and user_sessions.room_id = rooms.id) GROUP BY topics.id, topics.title, rooms.topic_id ORDER BY room_count desc LIMIT 5")
   end
