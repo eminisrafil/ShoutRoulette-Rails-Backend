@@ -17,14 +17,22 @@ class RoomsController < ApplicationController
     @room = Room.create_or_join(@topic, params, request)
     @position = params[:position]
 
+
+    puts "position => #{@position}"
+
+
     if params[:position] == 'observe'
       redirect_to '/' and return if @room.nil?
       @token = Room.subscriber_token @room.session_id
       @observer = @room.add_observer
     else
       @token = Room.publisher_token(@room.session_id)
+      puts "token => #{@token}"
+      respond_to do |format|
+        format.json { render :json => { 'Room' => @token} }
+        format.html {@token}
+      end
     end
-
   end
 
   def close
