@@ -3,8 +3,8 @@ class RoomsController < ApplicationController
   def show
 
     session['shouting'] ||= 0
-
-    if session['shouting'] > 0 and params[:position] != 'observe'
+    puts "session info => #{session}"
+    if session['shouting'] > 10 and params[:position] != 'observe'
       redirect_to root_path, notice: "don't spread yourself too thin! one shout at a time" and return
     else
       if params[:position] != 'observe'

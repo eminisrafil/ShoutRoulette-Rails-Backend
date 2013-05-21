@@ -6,7 +6,7 @@ $ ->
     # track the page
     # ----------------------------------
 
-    mixpanel.track("#{$('.topic').text()}");
+    #mixpanel.track("#{$('.topic').text()}");
 
     # ----------------------------------
     # Rage Faces and Loading
@@ -44,7 +44,8 @@ $ ->
     # ----------------------------------
     # close the room if people leave
     # ----------------------------------
-
+    
+    ###
     fixUnload = ->
       if document.readyState == 'interactive'
         
@@ -66,6 +67,7 @@ $ ->
     window.attachEvent('onunload', unload)
     window.attachEvent('onbeforeunload', fixUnload)
     window.onunload = -> unload()
+    ###
 
     # -----------------------------------
     # OpenTok Configuration
