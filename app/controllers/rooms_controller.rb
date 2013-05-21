@@ -29,7 +29,7 @@ class RoomsController < ApplicationController
       @token = Room.publisher_token(@room.session_id)
       puts "token => #{@token}"
       respond_to do |format|
-        format.json { render :json => { 'Room' => {token: @token, session_id: @room.session_id} }
+        format.json { render :json => { 'Room' => {token: @token, session_id: @room.session_id}}}
         format.html {@token}
       end
     end
