@@ -22,15 +22,9 @@ class Room < ActiveRecord::Base
       selected_room = Room.find_observable_room(topic)
     else
       # find a room with an open seat for your position
-      throw 'dont hack me bro' unless params[:position ] == 'agree' or params[:position] == 'disagree' 
+      throw 'dont hack me bro' unless params[:position ] == 'agree' or params[:position] == 'disagree'
+      Room.where("#{params[:position]} is null and topic_id = '#{topic.id}'").destroy_all(["created_at < ?", 5.minutes.ago])
     	selected_room = Room.where("#{params[:position]} is null and topic_id = '#{topic.id}'")
-      puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%#########################3333333"
-      puts selected_room
-      selected_room.map do |r|
-       
-        puts r
-        #r.destroy(["created_at < ?", 5.minutes.ago])
-      end
       selected_room = selected_room.shuffle.first
       # if there isn't one, create one. if there is, fill the position
       if !selected_room
