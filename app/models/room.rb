@@ -25,7 +25,8 @@ class Room < ActiveRecord::Base
       throw 'dont hack me bro' unless params[:position ] == 'agree' or params[:position] == 'disagree' 
     	selected_room = Room.where("#{params[:position]} is null and topic_id = '#{topic.id}'")
       selected_room.map do |r|
-        r.destroy(["created_at < ?", 5.minutes.ago])
+        puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%#########################3333333"
+        r.destroy(["created_at < ?", 5.minutes.ago])? (puts "Destroyed!") : (puts "Not destroyed!")
       end
       selected_room = selected_room.shuffle.first
       # if there isn't one, create one. if there is, fill the position
