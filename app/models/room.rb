@@ -24,8 +24,8 @@ class Room < ActiveRecord::Base
       # find a room with an open seat for your position
       throw 'dont hack me bro' unless params[:position ] == 'agree' or params[:position] == 'disagree' 
     	selected_room = Room.where("#{params[:position]} is null and topic_id = '#{topic.id}'")
-      selected_room.destroy_all(:conditions => ["updated_at < ?", 5.minutes.ago])
-      selected_room.shuffle.first
+      selected_room.destroy_all(["updated_at < ?", 5.minutes.ago])
+      selected_room = selected_room.shuffle.first
       # if there isn't one, create one. if there is, fill the position
       if !selected_room
         selected_room = topic.rooms.create({ session_id: OTSDK.createSession.to_s, :"#{params[:position]}" => true })
