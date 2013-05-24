@@ -26,7 +26,8 @@ class Room < ActiveRecord::Base
     	selected_room = Room.where("#{params[:position]} is null and topic_id = '#{topic.id}'")
       selected_room.map do |r|
         puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%#########################3333333"
-        r.destroy(["created_at < ?", 5.minutes.ago])
+        puts r
+        #r.destroy(["created_at < ?", 5.minutes.ago])
       end
       selected_room = selected_room.shuffle.first
       # if there isn't one, create one. if there is, fill the position
