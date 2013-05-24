@@ -18,7 +18,7 @@ class RoomsController < ApplicationController
     @position = params[:position]
 
 
-    puts "position => #{@position}"
+    #puts "position => #{@position}"
 
 
     if params[:position] == 'observe'
@@ -27,7 +27,7 @@ class RoomsController < ApplicationController
       @observer = @room.add_observer
     else
       @token = Room.publisher_token(@room.session_id)
-      puts "token => #{@token}"
+      #puts "token => #{@token}"
       respond_to do |format|
         format.json { render :json => { 'Room' => {token: @token, session_id: @room.session_id}}}
         format.html {@token}
