@@ -24,8 +24,10 @@ class Room < ActiveRecord::Base
       # find a room with an open seat for your position
       throw 'dont hack me bro' unless params[:position ] == 'agree' or params[:position] == 'disagree' 
     	selected_room = Room.where("#{params[:position]} is null and topic_id = '#{topic.id}'")
+      puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%#########################3333333"
+      puts selected_room
       selected_room.map do |r|
-        puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%#########################3333333"
+       
         puts r
         #r.destroy(["created_at < ?", 5.minutes.ago])
       end
