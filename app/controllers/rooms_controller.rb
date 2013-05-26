@@ -40,7 +40,10 @@ class RoomsController < ApplicationController
     if params[:position] != 'observe'
       session['shouting'] -= 1
     end
-    render text: "room closed"
+    render :text => "Room Closed", :status => 204
+    #respond_to do |format|
+       #render :status => 204
+    #end
   end
 
 end
