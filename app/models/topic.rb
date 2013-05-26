@@ -20,7 +20,7 @@ class Topic < ActiveRecord::Base
     Topic.all.each do |topic|
       total = topic.debaters + topic.observers
       poptop << [topic, total]
-     #puts "poptop:           #{poptop} \n\n\n"
+      puts "topic:           #{topic} \n\n\n"
      #puts "poptop to_json:   #{poptop.to_json}\n\n\n"
     end
     #sort
