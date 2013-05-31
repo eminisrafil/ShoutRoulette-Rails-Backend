@@ -4,7 +4,6 @@ class TopicsController < ApplicationController
     newTopic = Topic.create({ title: params[:topic] })
     puts params.inspect
     puts Rails.logger.debug params.inspect
-    puts Rails.logger params.inspect
     puts debug(params)
     puts "just created new topic\n\n"
     respond_to do |format|
