@@ -2,6 +2,7 @@ class TopicsController < ApplicationController
 
   def new
     newTopic = Topic.create({ title: params[:topic] })
+    puts params
     respond_to do |format|
     	#format.json { render :json => { 'Topics' => @all.to_json(methods:['agree_debaters'])}}
       format.json { render :json => { 'Topics' => newTopic}}
