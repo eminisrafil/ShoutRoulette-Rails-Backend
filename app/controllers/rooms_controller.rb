@@ -4,7 +4,7 @@ class RoomsController < ApplicationController
 
     session['shouting'] ||= 0
     puts "session info => #{session}"
-    if session['shouting'] > 10 and params[:position] != 'observe'
+    if session['shouting'] > 50 and params[:position] != 'observe'
       redirect_to root_path, notice: "don't spread yourself too thin! one shout at a time" and return
     else
       if params[:position] != 'observe'
@@ -29,7 +29,7 @@ class RoomsController < ApplicationController
       @token = Room.publisher_token(@room.session_id)
       #puts "token => #{@token}"
       respond_to do |format|
-        format.json { render :json => { 'Room' => {token: @token, session_id: @room.session_id, room_id: @room.id}}}
+        format.json { render :json => { 'Room' => {token: @token, session_id: @room.session_id, room_id: @room.id, title: @topic.title}}}
         format.html {@token}
       end
     end
