@@ -22,6 +22,7 @@
   / start the loop here
   - @all.each do |topic|
     = render partial: 'topic_row', locals: { topic: topic }
+  = will_paginate @all
 
 %script
   mixpanel.track("home page");

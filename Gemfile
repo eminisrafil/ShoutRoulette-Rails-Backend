@@ -5,6 +5,7 @@ gem 'opentok'
 gem 'haml'
 gem 'jquery-rails'
 gem 'roots-rails'
+gem 'will_paginate', '~> 3.0.0'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
@@ -17,6 +18,7 @@ group :development, :test do
   gem 'pg'
 end
 
+  
 group :production do
   gem 'pg'
 end

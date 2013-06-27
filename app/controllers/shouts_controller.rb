@@ -1,10 +1,10 @@
 class ShoutsController < ApplicationController
-
+  require 'will_paginate/array'
   
   def index
     @topics = Topic.top_popular
-    @all = Topic.sort_all(params)
-    @sorted = Topic.sort_limited
+    @all = Topic.sort_all(params).paginate(:page => params[:page], :per_page => 60)
+    @sorted = Topic.sort_limited.paginate(:page => params[:page], :per_page => 15)
 
 
     respond_to do |format|
