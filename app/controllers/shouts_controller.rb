@@ -6,7 +6,7 @@ class ShoutsController < ApplicationController
     @all = Topic.sort_all(params).paginate(:page => params[:page], :per_page => 10)
     @sorted = Topic.sort_limited.paginate(:page => params[:page], :per_page => 10)
 
-    @sorted.map{|x| puts x.title}
+    @all.map{|x| puts x.title}
 
 
     respond_to do |format|
