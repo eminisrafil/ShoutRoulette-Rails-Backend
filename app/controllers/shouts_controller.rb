@@ -10,7 +10,7 @@ class ShoutsController < ApplicationController
 
 
     respond_to do |format|
-      format.json { render :json => { 'Topics' => @sorted}, :methods => [:agree_debaters, :disagree_debaters, :observers]}
+      format.json { render :json => { 'Topics' => @all}, :methods => [:agree_debaters, :disagree_debaters, :observers]}
   	  format.html # show.html.erb
 	  end
   end
