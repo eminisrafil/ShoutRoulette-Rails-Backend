@@ -3,14 +3,14 @@ class ShoutsController < ApplicationController
   
   def index
     @topics = Topic.top_popular
-    @all = Topic.sort_all(params).paginate(:page => params[:page], :per_page => 10)
-    @sorted = Topic.sort_limited.paginate(:page => params[:page], :per_page => 10)
+    @all = Topic.sort_all(params).paginate(:page => params[:page], :per_page => 20)
+    @sorted = Topic.sort_limited.paginate(:page => params[:page], :per_page => 20)
 
-    @all.map{|x| puts x.title}
+    @all.to_json
 
 
     respond_to do |format|
-      format.json { render :json => { 'Topics' => @all}, :methods => [:agree_debaters, :disagree_debaters, :observers]}
+      format.json { render :json => { 'Topics' => @all, 'Total_Pages' => @all.total_pages}, :methods => [:agree_debaters, :disagree_debaters, :observers]}
   	  format.html # show.html.erb
 	  end
   end
