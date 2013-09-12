@@ -4,7 +4,9 @@ class ShoutsController < ApplicationController
   def index
     @topics = Topic.top_popular
     @all = Topic.sort_all(params).paginate(:page => params[:page], :per_page => 60)
-    @sorted = Topic.sort_limited.paginate(:page => params[:page], :per_page => 15)
+    @sorted = Topic.sort_limited.paginate(:page => params[:page], :per_page => 20)
+
+    @sorted.map{|x| puts x.title}
 
 
     respond_to do |format|
