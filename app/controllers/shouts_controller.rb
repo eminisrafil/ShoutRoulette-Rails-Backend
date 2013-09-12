@@ -8,9 +8,9 @@ class ShoutsController < ApplicationController
 
     @all.to_json
 
-
+#'Pagination' => ['total_pages' => @all.total_pages, 'current_page' => 20, 'page' => params[:page]]
     respond_to do |format|
-      format.json { render :json => { 'Topics' => @all, 'Total_Pages' => @all.total_pages}, :methods => [:agree_debaters, :disagree_debaters, :observers]}
+      format.json { render :json => { 'Topics' => @all, 'Pagination' =>  ['total_pages' => @all.total_pages, 'current_page' => 20, 'page' => params[:page]]}, :methods => [:agree_debaters, :disagree_debaters, :observers]}
   	  format.html # show.html.erb
 	  end
   end
