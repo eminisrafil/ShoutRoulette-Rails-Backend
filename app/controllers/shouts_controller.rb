@@ -8,12 +8,12 @@ class ShoutsController < ApplicationController
     @all = Topic.sort_all(params).paginate(:page => current_page, :per_page => 20)
     @sorted = Topic.sort_limited.paginate(:page => current_page, :per_page => 20)
 
-    puts @all.to_json
+    #puts @all.to_json
 
 
 #'Pagination' => ['total_pages' => @all.total_pages, 'current_page' => 20, 'page' => params[:page]]
     respond_to do |format|
-      format.json { render :json => { 'Topics' => @all, 'Pagination' =>  ['total_pages' => @all.total_pages, 'current_page' => current_page, 'per_page' => 20, 'total_objects' => @all.count]}, :methods => [:agree_debaters, :disagree_debaters, :observers]}
+      format.json { render :json => { 'Topics' => @all, 'Pagination' =>  ['total_pages' => @all.total_pages, 'current_page' => current_page, 'per_page' => 20, 'total_objects' => ((@all.count) * @all.total_pages)]}, :methods => [:agree_debaters, :disagree_debaters, :observers]}
   	  format.html # show.html.erb
 	  end
   end
