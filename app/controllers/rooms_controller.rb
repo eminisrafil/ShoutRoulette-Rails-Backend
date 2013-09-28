@@ -25,9 +25,14 @@ class RoomsController < ApplicationController
       redirect_to '/' and return if @room.nil?
       @token = Room.subscriber_token @room.session_id
       @observer = @room.add_observer
+      respond_to do |format|
+        format.json { render :json => { 'Room' => {token: @token, session_id: @room.session_id, room_id: @room.id, title: @topic.title}}}
+        format.html #{@token @observer}
+      end
+
+
     else
       @token = Room.publisher_token(@room.session_id)
-      #puts "token => #{@token}"
       respond_to do |format|
         format.json { render :json => { 'Room' => {token: @token, session_id: @room.session_id, room_id: @room.id, title: @topic.title}}}
         format.html {@token}

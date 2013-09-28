@@ -2,8 +2,12 @@ class ShoutsController < ApplicationController
   require 'will_paginate/array'
   
   def index
-    current_page = params[:page].to_i
 
+    if params[:page].nil? || params[:page] ==0
+      current_page = 1
+    else
+      current_page = params[:page].to_i
+    end
     @topics = Topic.top_popular
     @all = Topic.sort_all(params).paginate(:page => current_page, :per_page => 20)
     @sorted = Topic.sort_limited.paginate(:page => current_page, :per_page => 20)
