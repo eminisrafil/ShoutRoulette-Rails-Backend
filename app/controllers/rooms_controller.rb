@@ -1,42 +1,43 @@
 class RoomsController < ApplicationController
 
   def show
-
-    session['shouting'] ||= 0
-    puts "session info => #{session}"
-    if session['shouting'] > 50 and params[:position] != 'observe'
-      redirect_to root_path, notice: "don't spread yourself too thin! one shout at a time" and return
-    else
-      if params[:position] != 'observe'
-        session['shouting'] += 1
-      end
-    end
+    max_occupied_room_count()
 
     @topics = Topic.top_popular
     @topic = Topic.find(params[:id])
-    @room = Room.create_or_join(@topic, params, request)
+
+    received_session_id = params[:sessionId]
+    puts received_session_id
+    puts "^^from controller received_session_id^^^"
+    if !received_session_id.nil? && received_session_id.length>10 && received_session_id.length<300 
+      @room = Room.room_with_session_or_next_available(received_session_id, @topic, params)
+    else
+      @room = Room.create_or_join(@topic, params)
+    end
     @position = params[:position]
 
-
-    #puts "position => #{@position}"
-
-
     if params[:position] == 'observe'
-      redirect_to '/' and return if @room.nil?
-      @token = Room.subscriber_token @room.session_id
-      @observer = @room.add_observer
-      respond_to do |format|
-        format.json { render :json => { 'Room' => {token: @token, session_id: @room.session_id, room_id: @room.id, title: @topic.title}}}
-        format.html #{@token @observer}
-      end
-
-
+      observe()
     else
+
+    puts "room!"
+    puts @room.to_json
+    puts "room!"
       @token = Room.publisher_token(@room.session_id)
       respond_to do |format|
         format.json { render :json => { 'Room' => {token: @token, session_id: @room.session_id, room_id: @room.id, title: @topic.title}}}
         format.html {@token}
       end
+    end
+  end
+
+  def observe
+    redirect_to '/' and return if @room.nil?
+    @token = Room.subscriber_token @room.session_id
+    @observer = @room.add_observer
+    respond_to do |format|
+      format.json { render :json => { 'Room' => {token: @token, session_id: @room.session_id, room_id: @room.id, title: @topic.title}}}
+      format.html #{@token @observer}
     end
   end
 
@@ -49,6 +50,17 @@ class RoomsController < ApplicationController
     #respond_to do |format|
        #render :status => 204
     #end
+  end
+
+  def max_occupied_room_count
+    session['shouting'] ||= 0
+    if session['shouting'] > 500 and params[:position] != 'observe'
+      redirect_to root_path, notice: "don't spread yourself too thin! one shout at a time" and return
+    else
+      if params[:position] != 'observe'
+        session['shouting'] += 1
+      end
+    end
   end
 
 end

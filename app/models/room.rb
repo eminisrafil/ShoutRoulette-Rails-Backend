@@ -16,16 +16,19 @@ class Room < ActiveRecord::Base
   has_many :observers
   attr_accessible :session_id, :agree, :disagree, :closed
 
-  def self.create_or_join(topic, params, request)
+  def self.create_or_join(topic, params)
 
     if params[:position] == 'observe'
       selected_room = Room.find_observable_room(topic)
     else
       # find a room with an open seat for your position
       throw 'dont hack me bro' unless params[:position ] == 'agree' or params[:position] == 'disagree'
+
+      #No one likes paying for Servers - Delete old records quickly not to go over 10,000 rows again///
       Room.where("created_at <= :time AND topic_id = :topic" , {:time => 5.minutes.ago, :topic =>topic.id}).destroy_all
     	selected_room = Room.where("#{params[:position]} is null and topic_id = '#{topic.id}'")
       selected_room = selected_room.shuffle.first
+      
       # if there isn't one, create one. if there is, fill the position
       if !selected_room
         selected_room = topic.rooms.create({ session_id: OTSDK.createSession.to_s, :"#{params[:position]}" => true })
@@ -36,7 +39,22 @@ class Room < ActiveRecord::Base
 
     # return the room
     selected_room
+  end
 
+  def self.room_with_session_or_next_available(received_session_id, topic, params)
+    room = find_room_with_session(received_session_id)
+    if room.nil?
+      room = create_or_join(topic, params)
+      puts "room WAS NIL!!!!!!"
+
+    end
+    puts "room from model"
+    puts room
+    room
+  end
+
+  def self.find_room_with_session(received_session_id)
+    Room.where("session_id = ?", received_session_id).first
   end
 
   def close(position, observer_id)
