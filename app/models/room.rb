@@ -54,6 +54,7 @@ class Room < ActiveRecord::Base
   end
 
   def close(position, observer_id)
+    puts params
     if position == 'observe'
         puts "MODEL :::::::  destroying observer with observer ID"
         puts observer_id
@@ -78,7 +79,7 @@ class Room < ActiveRecord::Base
     return room unless room.nil?
     room = Room.where("agree is not null or disagree is not null and topic_id = ?", topic.id).shuffle.first
     puts "found room for observering:"
-    puts room.topic.title
+    puts room.topic.title unless room.topic.title.nil?
     puts room.to_json
     room
   end

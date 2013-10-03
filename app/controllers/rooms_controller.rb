@@ -1,6 +1,7 @@
 class RoomsController < ApplicationController
 
   def show
+    puts params
     max_occupied_room_count()
 
     @topics = Topic.top_popular
@@ -37,7 +38,7 @@ class RoomsController < ApplicationController
     @token = Room.subscriber_token @room.session_id
 
     puts "CONTROLLER:::: OBSERVE"
-    puts @room.topic.title
+    puts @room.topic.title unless @room.topic.title.nil?
     puts @room.to_json
     @observer = @room.add_observer
     respond_to do |format|
