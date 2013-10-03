@@ -18,7 +18,7 @@ class RoomsController < ApplicationController
 
     puts "CONTROLLER::::::::::::::::::::::::::::::::::::::::::::: show"
     puts @room.to_json
-    puts @room.topic.title unless @room.topic.title.nil?
+    puts @room.topic.title unless @room.nil?
 
 
 
@@ -38,7 +38,7 @@ class RoomsController < ApplicationController
     @token = Room.subscriber_token @room.session_id
 
     puts "CONTROLLER:::: OBSERVE"
-    puts @room.topic.title unless @room.topic.title.nil?
+    puts @room.topic.title unless @room.nil?
     puts @room.to_json
     @observer = @room.add_observer
     respond_to do |format|
@@ -49,6 +49,7 @@ class RoomsController < ApplicationController
 
   def close
     puts params
+    puts "closing"
   	Room.find(params[:id]).close params[:position], params[:observer_id]
     if params[:position] != 'observe'
       session['shouting'] -= 1
