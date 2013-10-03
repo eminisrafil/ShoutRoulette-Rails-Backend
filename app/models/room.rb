@@ -60,8 +60,10 @@ class Room < ActiveRecord::Base
         puts observer_id
       Observer.find(observer_id).destroy unless observer_id.nil?
       if observer_id.nil? 
-        observer = Observer.where(":room_id =>?", self.id).first.destroy
         puts "MODEL :::::::  destroying observer without observer ID"
+        puts "SELF ID::: #{self.id}"
+        observer = Observer.where("room_id =?", self.id).first.destroy
+        
         puts observer.to_json
       end
     else
