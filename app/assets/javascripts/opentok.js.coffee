@@ -59,7 +59,8 @@ $ ->
     unload = ->
       $.ajax
         type: 'DELETE'
-        url: "/room/"+ $('.room_id').text()+"/"+$('.position').text()+"/"+$('.observer_id').text()
+        url: "/room/"+ $('.room_id').text()+"/"+$('.position').text()
+        #url: "/room/"+ $('.room_id').text()+"/"+$('.position').text()#+"/"+$('.observer_id').text()
         data: { id: $('.room_id').text(), position: $('.position').text(), observer_id: $('.observer_id').text() }
         async : false
         success: (data) -> console.log data
