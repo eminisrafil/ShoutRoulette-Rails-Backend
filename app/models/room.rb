@@ -55,7 +55,6 @@ class Room < ActiveRecord::Base
 
   def close(position, observer_id)
     puts "closing in model"
-    puts params
     if position == 'observe'
         puts "MODEL :::::::  destroying observer with observer ID"
         puts observer_id
