@@ -2,6 +2,7 @@ class RoomsController < ApplicationController
 
   def show
     puts params
+    puts request
     max_occupied_room_count()
 
     @topics = Topic.top_popular
