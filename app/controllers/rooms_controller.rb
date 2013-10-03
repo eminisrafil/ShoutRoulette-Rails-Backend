@@ -2,7 +2,7 @@ class RoomsController < ApplicationController
 
   def show
     puts params
-    puts request
+    puts request.fullpath
     max_occupied_room_count()
 
     @topics = Topic.top_popular
