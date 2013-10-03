@@ -16,20 +16,14 @@ class RoomsController < ApplicationController
     @position = params[:position]
 
     puts "CONTROLLER::::::::::::::::::::::::::::::::::::::::::::: show"
-    puts @room.topic.title
     puts @room.to_json
+    puts @room.topic.title unless @room.topic.title.nil?
 
 
 
     if params[:position] == 'observe'
       observe()
     else
-
-
-
-    puts "room!"
-    puts @room.to_json
-    puts "room!"
       @token = Room.publisher_token(@room.session_id)
       respond_to do |format|
         format.json { render :json => { 'Room' => {token: @token, session_id: @room.session_id, room_id: @room.id, title: @topic.title}}}
