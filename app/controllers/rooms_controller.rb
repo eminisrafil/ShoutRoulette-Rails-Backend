@@ -50,6 +50,8 @@ class RoomsController < ApplicationController
 
   def close
     puts params
+    puts "request is coming:"
+    puts request
     puts "closing"
   	Room.find(params[:id]).close params[:position], params[:observer_id]
     if params[:position] != 'observe'
