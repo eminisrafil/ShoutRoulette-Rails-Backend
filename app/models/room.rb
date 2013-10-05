@@ -16,6 +16,8 @@ class Room < ActiveRecord::Base
   has_many :observers
   attr_accessible :session_id, :agree, :disagree, :closed
 
+  after_create :clean_up_old_observers
+
   def self.create_or_join(topic, params)
 
     if params[:position] == 'observe'
@@ -25,7 +27,7 @@ class Room < ActiveRecord::Base
       throw 'dont hack me bro' unless params[:position ] == 'agree' or params[:position] == 'disagree'
 
       #No one likes paying for Servers - Delete old records quickly not to go over 10,000 rows again///
-      Room.where("created_at <= :time AND topic_id = :topic" , {:time => 5.minutes.ago, :topic =>topic.id}).destroy_all
+      Room.where("created_at <= :time AND topic_id = :topic" , {:time => 6.minutes.ago, :topic =>topic.id}).destroy_all
     	selected_room = Room.where("#{params[:position]} is null and topic_id = '#{topic.id}'")
       selected_room = selected_room.shuffle.first
       

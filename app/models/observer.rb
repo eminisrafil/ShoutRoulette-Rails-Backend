@@ -10,4 +10,11 @@
 
 class Observer < ActiveRecord::Base
   belongs_to :room
+
+  after_create :clean_up_old_observers
+
+  def clean_up_old_observers
+  	puts "old observers cleaned up yo"
+  	Observer.where("created_at <= :time" , {:time => 8.hours.ago}).destroy_all
+  end
 end
