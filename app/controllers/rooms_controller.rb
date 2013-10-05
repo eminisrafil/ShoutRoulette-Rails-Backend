@@ -21,8 +21,6 @@ class RoomsController < ApplicationController
     puts @room.to_json
     puts @room.topic.title unless @room.nil?
 
-
-
     if params[:position] == 'observe'
       observe()
     else
@@ -35,16 +33,26 @@ class RoomsController < ApplicationController
   end
 
   def observe
-    redirect_to '/' and return if @room.nil?
-    @token = Room.subscriber_token @room.session_id
+    if @room.nil?
+      room_not_found
+      return
+    else
+      @token = Room.subscriber_token @room.session_id
+      puts "CONTROLLER:::: OBSERVE"
+      puts @room.topic.title unless @room.nil?
+      puts @room.to_json
+      @observer = @room.add_observer
+      respond_to do |format|
+        format.json { render :json => { 'Room' => {token: @token, session_id: @room.session_id, room_id: @room.id, title: @topic.title}}}
+        format.html 
+      end
+    end
+  end
 
-    puts "CONTROLLER:::: OBSERVE"
-    puts @room.topic.title unless @room.nil?
-    puts @room.to_json
-    @observer = @room.add_observer
+  def room_not_found
     respond_to do |format|
-      format.json { render :json => { 'Room' => {token: @token, session_id: @room.session_id, room_id: @room.id, title: @topic.title}}}
-      format.html #{@token @observer}
+      format.json { render :json => { 'Room' => {token: "", session_id: "", room_id:"", title: @topic.title}}}
+      format.html {redirect_to '/'}
     end
   end
 
