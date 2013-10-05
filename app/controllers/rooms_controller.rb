@@ -65,7 +65,12 @@ class RoomsController < ApplicationController
     if params[:position] != 'observe'
       session['shouting'] -= 1
     end
-    render :text => "Room Closed", :status => 204
+    #render :text => "Room Closed", :status => 204
+    respond_to do |format|
+      format.json { render :json => { message: "ok"}, :status => 200}
+      format.html { render :text => "Room Closed", :status => 204}
+    end
+
   end
 
   def max_occupied_room_count
