@@ -16,8 +16,6 @@ class Room < ActiveRecord::Base
   has_many :observers
   attr_accessible :session_id, :agree, :disagree, :closed
 
-  after_create :clean_up_old_observers
-
   def self.create_or_join(topic, params)
 
     if params[:position] == 'observe'
