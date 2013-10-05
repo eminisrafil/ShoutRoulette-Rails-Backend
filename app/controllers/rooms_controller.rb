@@ -57,10 +57,7 @@ class RoomsController < ApplicationController
   end
 
   def close
-    puts params
-    puts "request is coming:"
-    puts request.fullpath
-    puts "closing"
+    puts "Close request is coming: #{request.fullpath}  ||| params: #{params}"
   	Room.find(params[:id]).close params[:position], params[:observer_id]
     if params[:position] != 'observe'
       session['shouting'] -= 1
