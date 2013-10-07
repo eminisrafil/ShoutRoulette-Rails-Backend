@@ -55,6 +55,7 @@ class Room < ActiveRecord::Base
 
   def close(position, observer_id)
     puts "closing in model observer_id: #{observer_id}"
+    puts "Close:::Model::: self::#{self}"
     if position == 'observe'
       if observer_id.nil? 
         Observer.where("room_id =?", self.id).first.destroy
@@ -62,9 +63,9 @@ class Room < ActiveRecord::Base
         Observer.find(observer_id).destroy
       end
     else
-      update_attribute position, nil
+      update_attribute position, nil unless self.nil?
     end
-    self.destroy if agree.nil? and disagree.nil?
+    self.destroy if (agree.nil? and disagree.nil? and !self.nil?)
   end
 
   def add_observer

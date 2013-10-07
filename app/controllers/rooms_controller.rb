@@ -61,10 +61,14 @@ class RoomsController < ApplicationController
     if(params[:id].nil? or params[:position].nil?)
       return
     end
-  	Room.find(params[:id]).close params[:position], params[:observer_id]
+  	room = Room.find(params[:id])
+    room.close params[:position], params[:observer_id] unless room.nil?
     if params[:position] != 'observe'
       session['shouting'] -= 1
     end
+
+
+
     #render :text => "Room Closed", :status => 204
     respond_to do |format|
       format.json { render :json => { message: "ok"}, :status => 200}
@@ -81,6 +85,13 @@ class RoomsController < ApplicationController
       if params[:position] != 'observe'
         session['shouting'] += 1
       end
+    end
+  end
+
+  rescue_from ActiveRecord::RecordNotFound do
+    respond_to do |format|
+      format.json { render :json => { message: "Not found, foghetaboutit"}, :status => 200}
+      format.html {redirect_to '/'}
     end
   end
 
