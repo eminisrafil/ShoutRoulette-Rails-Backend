@@ -2,7 +2,8 @@ class RoomsController < ApplicationController
 
   def show
     puts params
-    puts request.fullpath
+    puts "###User Agent is coming up###"
+    puts request.user_agent
     max_occupied_room_count()
 
     @topics = Topic.top_popular
@@ -66,8 +67,6 @@ class RoomsController < ApplicationController
     if params[:position] != 'observe'
       session['shouting'] -= 1
     end
-
-
 
     #render :text => "Room Closed", :status => 204
     respond_to do |format|
