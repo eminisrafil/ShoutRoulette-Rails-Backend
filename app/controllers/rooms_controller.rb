@@ -5,7 +5,7 @@ class RoomsController < ApplicationController
     puts "###User Agent is coming up###"
     puts request.user_agent
 
-    if userAgent.match(/iPhone/i)
+    if request.user_agent.match(/iPhone/i)
       puts "This nigga has an iphone"
     else
       puts "doesnt have an"
