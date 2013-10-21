@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121010204906) do
+ActiveRecord::Schema.define(:version => 20131021190113) do
 
   create_table "observers", :force => true do |t|
     t.integer  "room_id"
@@ -22,11 +22,14 @@ ActiveRecord::Schema.define(:version => 20121010204906) do
   create_table "rooms", :force => true do |t|
     t.string   "session_id"
     t.integer  "topic_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
     t.boolean  "agree"
     t.boolean  "disagree"
+    t.string   "short_session_id"
   end
+
+  add_index "rooms", ["short_session_id"], :name => "index_rooms_on_short_session_id"
 
   create_table "topics", :force => true do |t|
     t.string   "title"

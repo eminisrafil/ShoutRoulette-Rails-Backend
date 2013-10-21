@@ -14,7 +14,7 @@
 class Room < ActiveRecord::Base
   belongs_to :topic
   has_many :observers
-  attr_accessible :session_id, :agree, :disagree, :closed
+  attr_accessible :session_id, :agree, :disagree, :closed, :short_session_id
 
   def self.create_or_join(topic, params)
 
@@ -31,7 +31,8 @@ class Room < ActiveRecord::Base
       
       # if there isn't one, create one. if there is, fill the position
       if !selected_room
-        selected_room = topic.rooms.create({ session_id: OTSDK.createSession.to_s, :"#{params[:position]}" => true })
+        session_id_string = OTSDK.createSession.to_s
+        selected_room = topic.rooms.create({ session_id: session_id_string, short_session_id: self.short_session(session_id_string), "#{params[:position]}" => true})
       else
         selected_room.update_attribute params[:position], true
       end
@@ -50,7 +51,7 @@ class Room < ActiveRecord::Base
   end
 
   def self.find_room_with_session(received_session_id)
-    Room.where("session_id = ?", received_session_id).first
+    Room.where("short_session_id = ?", received_session_id).first
   end
 
   def close(position, observer_id)
@@ -89,6 +90,10 @@ class Room < ActiveRecord::Base
 
   def self.subscriber_token(session)
     OTSDK.generateToken :session_id => session, :role => OpenTok::RoleConstants::SUBSCRIBER
+  end
+
+  def self.short_session(session)
+    session.to_s[-7..-2]
   end
 
 end
