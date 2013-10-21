@@ -4,6 +4,15 @@ class RoomsController < ApplicationController
     puts params
     puts "###User Agent is coming up###"
     puts request.user_agent
+
+    if userAgent.match(/iPhone/i)
+      puts "This nigga has an iphone"
+    else
+      puts "doesnt have an"
+    end
+
+
+
     max_occupied_room_count()
 
     @topics = Topic.top_popular
