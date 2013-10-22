@@ -2,17 +2,7 @@ class RoomsController < ApplicationController
 
   def show
     puts params
-    puts "###User Agent is coming up###"
-    puts request.user_agent
-
-    if request.user_agent.match(/iPhone/i)
-      puts "This nigga has an iphone"
-    else
-      puts "doesnt have an"
-    end
-
-
-
+   
     max_occupied_room_count()
 
     @topics = Topic.top_popular
@@ -20,7 +10,7 @@ class RoomsController < ApplicationController
 
     received_session_id = params[:sessionId]
 
-    if !received_session_id.nil? && received_session_id.length>10 && received_session_id.length<300 
+    if !received_session_id.nil? && received_session_id.length>2 && received_session_id.length<10 
       @room = Room.room_with_session_or_next_available(received_session_id, @topic, params)
     else
       @room = Room.create_or_join(@topic, params)
@@ -101,6 +91,19 @@ class RoomsController < ApplicationController
       format.json { render :json => { message: "Not found, foghetaboutit"}, :status => 200}
       format.html {redirect_to '/'}
     end
+  end
+
+  def invite
+    puts "###User Agent is coming up###"
+    puts request.user_agent
+
+    if request.user_agent.match(/iPhone/i) && !request.user_agent.match(/ShoutRoulette/i)
+      puts "This nigga has an iphone"
+      redirect_to "ShoutRoulette://#{request.fullpath}"
+    else
+      puts "doesnt have an"
+    end
+
   end
 
 end
