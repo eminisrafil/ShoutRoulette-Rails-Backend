@@ -6,6 +6,7 @@ gem 'haml'
 gem 'jquery-rails'
 gem 'roots-rails'
 gem 'will_paginate', '~> 3.0.0'
+gem 'useragent'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'

@@ -1,8 +1,8 @@
 ShoutrouletteV2::Application.routes.draw do
-
   # these routes need tons of work. but later
 
   root to: "shouts#index"
+  get "invites/:room_id/:room_position" => "invites#index" 
   get 'room/:id/:position' => "rooms#show", as: 'show_room'
 
   scope 'pages', controller: 'pages' do

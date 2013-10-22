@@ -11,7 +11,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131021190113) do
+ActiveRecord::Schema.define(:version => 20131021214518) do
+
+  create_table "invites", :force => true do |t|
+    t.string   "browser"
+    t.string   "version"
+    t.string   "platform"
+    t.string   "ip"
+    t.string   "region"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "observers", :force => true do |t|
     t.integer  "room_id"
