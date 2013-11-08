@@ -1,14 +1,12 @@
 class RoomsController < ApplicationController
 
   def show
-    puts params
-   
     max_occupied_room_count()
 
     @topics = Topic.top_popular
     @topic = Topic.find(params[:id])
 
-    received_session_id = params[:sessionId]
+    received_session_id = params[:q]
 
     if !received_session_id.nil? && received_session_id.length>2 && received_session_id.length<10 
       @room = Room.room_with_session_or_next_available(received_session_id, @topic, params)
@@ -16,10 +14,6 @@ class RoomsController < ApplicationController
       @room = Room.create_or_join(@topic, params)
     end
     @position = params[:position]
-
-    puts "CONTROLLER::::::::::::::::::::::::::::::::::::::::::::: show"
-    puts @room.to_json
-    puts @room.topic.title unless @room.nil?
 
     if params[:position] == 'observe'
       observe()
@@ -38,9 +32,6 @@ class RoomsController < ApplicationController
       return
     else
       @token = Room.subscriber_token @room.session_id
-      puts "CONTROLLER:::: OBSERVE"
-      puts @room.topic.title unless @room.nil?
-      puts @room.to_json
       @observer = @room.add_observer
       respond_to do |format|
         format.json { render :json => { 'Room' => {token: @token, session_id: @room.session_id, room_id: @room.id, title: @topic.title}}}
@@ -67,7 +58,6 @@ class RoomsController < ApplicationController
       session['shouting'] -= 1
     end
 
-    #render :text => "Room Closed", :status => 204
     respond_to do |format|
       format.json { render :json => { message: "ok"}, :status => 200}
       format.html { render :text => "Room Closed", :status => 204}
@@ -92,18 +82,4 @@ class RoomsController < ApplicationController
       format.html {redirect_to '/'}
     end
   end
-
-  def invite
-    puts "###User Agent is coming up###"
-    puts request.user_agent
-
-    if request.user_agent.match(/iPhone/i) && !request.user_agent.match(/ShoutRoulette/i)
-      puts "This nigga has an iphone"
-      redirect_to "ShoutRoulette://#{request.fullpath}"
-    else
-      puts "doesnt have an"
-    end
-
-  end
-
 end

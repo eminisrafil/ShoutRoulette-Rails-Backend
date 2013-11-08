@@ -55,8 +55,6 @@ class Room < ActiveRecord::Base
   end
 
   def close(position, observer_id)
-    puts "closing in model observer_id: #{observer_id}"
-    puts "Close:::Model::: self::#{self}"
     if position == 'observe'
       if observer_id.nil? 
         Observer.where("room_id =?", self.id).first.destroy
@@ -74,13 +72,9 @@ class Room < ActiveRecord::Base
   end
 
   def self.find_observable_room(topic)
-    puts "topic ID :::: #{topic.id}"
     room = Room.where("(agree is not null and disagree is not null) and topic_id = ?", topic.id).shuffle.first
     return room unless room.nil?
     room = Room.where("(agree is not null or disagree is not null) and topic_id = ?", topic.id).shuffle.first
-    puts "found room for observering:"
-    puts room.topic.title unless room.nil?
-    puts room.to_json
     room
   end
 
