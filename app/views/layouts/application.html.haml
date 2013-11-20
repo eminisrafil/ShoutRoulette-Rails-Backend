@@ -21,12 +21,14 @@
     %nav
       %ul
         %li
-          = link_to 'about', about_path
+          %a= link_to 'about', about_path
         %li
           %a= link_to 'get angry', get_angry_path
         %li
           %a= link_to 'feedback', 'mailto:feedback@shoutroulette.com'
         %li
+          %a= link_to 'press', press_path
+        %li 
           %a{ href: 'http://comedyhackday.org/', target: '_blank' } #comedyhackday
   #main
     = yield
