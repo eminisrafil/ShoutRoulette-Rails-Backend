@@ -1,0 +1,8 @@
+development:
+    adapter: postgresql
+    database: shout
+    password: password
+    host: localhost
+    username: postgre
+    pool: 5
+    timeout: 5000
