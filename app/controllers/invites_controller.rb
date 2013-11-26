@@ -21,7 +21,7 @@ class InvitesController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound do
     respond_to do |format|
       format.json { render :json => { message: "Not found, foghetaboutit"}, :status => 200}
-      format.html { redirect_to '/', :flash => { :notice => "Room Not Found" }}
+      format.html { redirect_to @path}
     end
   end
 end
