@@ -9,11 +9,11 @@
 				= link_to @topic_title, "shoutroulette://ShoutRoulette.com#{@path}" 
 
 	%button#itunes-download-button
-		Download the App!
+		Download App From iTunes!
 
 %script
 	console.log("shoutroulette://ShoutRoulette.com" +"<%= @path %>");
-	$("#download-button").click(function() {
+	$("#itunes-download-button").click(function() {
 	window.location ="itms-apps:itunes.apple.com/us/app/shoutroulette/id740817024?ls=1&mt=8"
 	});
 	var now = new Date().valueOf();
