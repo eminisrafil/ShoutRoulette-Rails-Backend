@@ -19,9 +19,13 @@ class InvitesController < ApplicationController
   end
 
   rescue_from ActiveRecord::RecordNotFound do
-    respond_to do |format|
-      format.json { render :json => { message: "Not found, foghetaboutit"}, :status => 200}
-      format.html { redirect_to @path}
+    @topic_title = "Click here to start shouting!"
+    if iOS_user_agent?
+      respond_to do |format|
+        format.html { render "/invites/index.html.haml"}
+      end
+    else
+      redirect_to @path
     end
   end
 end
