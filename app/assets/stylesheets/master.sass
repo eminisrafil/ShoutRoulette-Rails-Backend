@@ -423,5 +423,82 @@ h2.bottom-heading
     margin: 0 auto
     width: 900px
 
+
   .matched
     color: #090
+
+// ---------------------------------------------
+// Mobile Invite Page
+// ---------------------------------------------
+#mobile-container-invite
+  width: 100%
+
+  #itunes-download-button
+    display: block
+    width: 300px
+    margin-left: auto
+    margin-right: auto
+    margin-top: 1em
+    padding: .35em .65em
+    font-size: 1.5em
+    border: .07em solid #30a6c7
+    color: #fafafa
+    background: #41b7d8
+    -moz-border-radius: .3125em
+    -webkit-border-radius: .3125em
+    border-radius: .3125em
+    -webkit-transition: all .3s ease
+    -moz-transition: all .3s ease
+    -o-transition: all .3s ease
+    transition: all .3s ease
+
+  #static-header-mobile
+    height: 130px
+    background: #d46d4a image-url("session-bg.jpg") center center
+    width: 100%
+    border-bottom: 13px solid #232323
+    position: relative
+    margin-bottom: 30px
+
+    h1
+      padding-top: 44px
+      color: #fff
+      font-size: 3em
+      font-family: 'Refrigerator', sans-serif
+      text-shadow: 2px 2px 0 rgba(0,0,0,.2)
+      display: block
+      margin: 0 auto
+      text-align: center
+
+  #invite-message-mobile
+    text-align: center 
+    a
+      text-decoration: none
+      color: #d36846
+      +bold
+      +transition
+      border-bottom: 1px dotted
+      font-size: 1.5em
+
+      &:hover
+        color: #e79d6c
+    p
+      +p
+
+    h1
+      padding-top: 24px
+      color: #000
+      font-size: 1.5em
+      display: block
+      margin: 0 auto
+
+    h2
+      padding-top: 24px
+      color: #000
+      font-size: 1.5em
+      font-family: 'Refrigerator', sans-serif
+      *text-shadow: 2px 2px 0 rgba(0,0,0,.2)
+      display: block
+      margin-left:auto
+      margin-right:auto
+
