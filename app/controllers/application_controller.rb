@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
 
 	def iOS_user_agent?
-		put "yup it's an iphone"
+		puts "yup it's an iphone"
 		@user_agent ||= request.user_agent.try :match, /(iphone|ipod)/i 
 	end
 
