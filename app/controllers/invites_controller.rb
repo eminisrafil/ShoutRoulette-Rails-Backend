@@ -11,15 +11,18 @@ class InvitesController < ApplicationController
 
     if iOS_user_agent?
       respond_to do |format|
+        puts "rendering invites.html.haml!"
         format.html { render "/invites/index.html.haml"}
       end
     else
+      puts "REDIRECTING TO @PATH #### #{iOS_user_agent?}" 
       redirect_to @path
   	end
   end
 
   rescue_from ActiveRecord::RecordNotFound do
     @topic_title = "Click here to start shouting!"
+    puts "ACTIVE RECORD FAILED TO FIND THAT SHIT"
     if iOS_user_agent?
       respond_to do |format|
         format.html { render "/invites/index.html.haml"}
